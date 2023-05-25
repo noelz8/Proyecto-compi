@@ -2,64 +2,94 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    EQUAL
-    ID
-    LPAREN
-    RPAREN
+    ARROBA
+    COMA
+    COMILLAS
+    DER_EXCLAMACION
+    DER_INTERROGACION
+    ENYE
+    GUION
+    IGUALDAD
+    IZQ_EXCLAMACION
+    IZQ_INTERROGACION
+    LETRA
+    LPARENTESIS
+    MAYUSCULA
+    PUNTO
+    PUNTO_COMA
+    RPARENTESIS
+    SLASH
+    TILDE
+    UNDERSCORE
 
 Grammar
 
-Rule 0     S' -> expression
-Rule 1     expression -> INTEGER PLUS INTEGER
+Rule 0     S' -> program
+Rule 1     program -> comentario procedimientos
+Rule 2     comentario -> COMENTARIO
+Rule 3     procedimientos -> procedimiento
+Rule 4     procedimientos -> procedimientos procedimiento
+Rule 5     procedimiento -> PROC ID ( cuerpo_procedimiento )
+Rule 6     cuerpo_procedimiento -> instrucciones
+Rule 7     instrucciones -> instruccion
+Rule 8     instrucciones -> instrucciones instruccion
+Rule 9     instruccion -> asignacion
+Rule 10    instruccion -> llamada_procedimiento
+Rule 11    asignacion -> ID = expresion ;
+Rule 12    llamada_procedimiento -> CALL ( ID ) ;
+Rule 13    expresion -> NUMERO
+Rule 14    expresion -> ID
+Rule 15    expresion -> expresion SUMA expresion
+Rule 16    expresion -> expresion RESTA expresion
+Rule 17    expresion -> expresion MULTIPLICACION expresion
+Rule 18    expresion -> expresion DIVISION expresion
 
 Terminals, with rules where they appear
 
-EQUAL                : 
-ID                   : 
-INTEGER              : 1 1
-LPAREN               : 
-PLUS                 : 1
-RPAREN               : 
+(                    : 5 12
+)                    : 5 12
+;                    : 11 12
+=                    : 11
+ARROBA               : 
+COMA                 : 
+COMENTARIO           : 2
+COMILLAS             : 
+DER_EXCLAMACION      : 
+DER_INTERROGACION    : 
+DIVISION             : 18
+ENYE                 : 
+GUION                : 
+IGUALDAD             : 
+IZQ_EXCLAMACION      : 
+IZQ_INTERROGACION    : 
+LETRA                : 
+LPARENTESIS          : 
+MAYUSCULA            : 
+MULTIPLICACION       : 17
+NUMERO               : 13
+PUNTO                : 
+PUNTO_COMA           : 
+RESTA                : 16
+RPARENTESIS          : 
+SLASH                : 
+SUMA                 : 15
+TILDE                : 
+UNDERSCORE           : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-expression           : 0
-
-Parsing method: LALR
-
-state 0
-
-    (0) S' -> . expression
-    (1) expression -> . INTEGER PLUS INTEGER
-
-    INTEGER         shift and go to state 2
-
-    expression                     shift and go to state 1
-
-state 1
-
-    (0) S' -> expression .
-
-
-
-state 2
-
-    (1) expression -> INTEGER . PLUS INTEGER
-
-    PLUS            shift and go to state 3
-
-
-state 3
-
-    (1) expression -> INTEGER PLUS . INTEGER
-
-    INTEGER         shift and go to state 4
-
-
-state 4
-
-    (1) expression -> INTEGER PLUS INTEGER .
-
-    $end            reduce using rule 1 (expression -> INTEGER PLUS INTEGER .)
+CALL                 : 12
+ID                   : 5 11 12 14
+PROC                 : 5
+asignacion           : 9
+comentario           : 1
+cuerpo_procedimiento : 5
+expresion            : 11 15 15 16 16 17 17 18 18
+instruccion          : 7 8
+instrucciones        : 6 8
+llamada_procedimiento : 10
+procedimiento        : 3 4
+procedimientos       : 1 4
+program              : 0
 
