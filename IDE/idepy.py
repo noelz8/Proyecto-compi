@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import scrolledtext
 from tkinter import font
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
+import subprocess
+import sys
 
 
 #Valores fijos
@@ -26,7 +28,37 @@ def cerrar_ventana():
 
 # Función para compilar el archivo
 def compileCode():
-    print("Se compiló correctamente el codigo")
+    codigo = editor.get("1.0", tk.END)
+    
+    # Crear un widget de texto para mostrar la salida de compilación
+    texto_consola = scrolledtext.ScrolledText(contenedor, width=80, height=10, wrap=tk.WORD)
+    texto_consola.pack(side = tk.BOTTOM,fill=tk.BOTH, expand=True)
+    
+    # Redirigir la salida estándar al widget de texto
+    sys.stdout = sys.stderr = ConsolaRedireccionada(texto_consola)
+    
+    # Aquí debes realizar el proceso de compilación adecuado para el lenguaje de programación específico
+    # En este ejemplo, usaremos un comando genérico para simular la compilación en Python
+    try:
+        resultado = subprocess.check_output(["python", "-c", codigo], universal_newlines=True)
+        print("El código se compiló correctamente.\n\nResultado:\n" + resultado)
+    except subprocess.CalledProcessError as e:
+        print("Ocurrió un error al compilar el código:\n" + e.output)
+
+# Clase personalizada para redirigir la salida estándar al widget de texto
+class ConsolaRedireccionada:
+    def __init__(self, widget):
+        self.widget = widget
+
+    def write(self, message):
+        self.widget.insert(tk.END, message)
+
+    def flush(self):
+        pass
+
+# Crear un contenedor para organizar los elementos
+contenedor = tk.Frame(ventana)
+contenedor.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
 # Función para cargar el archivo
 def cargarArchivo():
