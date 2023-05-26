@@ -63,7 +63,10 @@ tokens = [
     'ELSE',
     'PRINTVALUES',
     'VALUES',
-    'ID'
+    'ID',
+    'VARIABLE',
+    'TRUE',
+    'FALSE'
 ]
 reserved = {
     
@@ -89,7 +92,9 @@ reserved = {
     'Then':'THEN',
     'else': 'ELSE',
     'PrintValues': 'PRINTVALUES',
-    'Values': 'VALUES'
+    'Values': 'VALUES',
+    'True':'TRUE',
+    'False':'FALSE'
 }
 
 cond_Numericas = {
@@ -130,6 +135,26 @@ t_DER_EXCLAMACION = r'!'
 # Ignorar caracteres en blanco
 t_ignore = ' \t'
 
+
+
+# Regla para la variable
+def t_VARIABLE(t):
+    r'@[?\w]{1,11}'
+    if len(t.value) > 12:
+        print("Error: La variable excede el máximo de 12 posiciones")
+        t.lexer.skip(1)
+    elif len(t.value) < 2:
+        print("Error: La variable debe tener al menos 2 posiciones")
+        t.lexer.skip(1)
+    elif t.value[0] != '@':
+        print("Error: La variable debe iniciar con una arroba (@)")
+        t.lexer.skip(1)  
+    else:
+        # Verificar si es una palabra reservada
+        if t.value in reserved:
+            t.type = reserved[t.value]
+        return t
+    
 def t_COND_NUMERICA(t):
     r'>|<|==|<>|>=|<='
     t.type = cond_Numericas.get(t.value)
