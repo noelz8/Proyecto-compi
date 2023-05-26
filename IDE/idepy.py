@@ -8,7 +8,7 @@ from tkinter import filedialog
 # Crear botones con el mismo tamaño
 ancho_boton = 10  # Ancho fijo para los botones
 altura_boton = 2  # Altura fija para los botones
-boton_estilo = {"relief": "solid", "borderwidth": 2}
+boton_estilo = {"relief": "solid", "borderwidth": 1}
 
 
 # Crear la ventana principal
