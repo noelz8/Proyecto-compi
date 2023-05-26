@@ -2,94 +2,200 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    ADD
     ARROBA
+    CALL
     COMA
     COMILLAS
     DER_EXCLAMACION
     DER_INTERROGACION
+    DISTINTO_QUE
+    DIV
+    DIVISION
     ENYE
+    FALSE
     GUION
+    ID
+    IGUAL
     IGUALDAD
     IZQ_EXCLAMACION
     IZQ_INTERROGACION
     LETRA
     LPARENTESIS
+    MAYOR_IGUAL_QUE
+    MAYOR_QUE
     MAYUSCULA
+    MENOR_IGUAL_QUE
+    MENOR_QUE
+    MUL
+    MULTIPLICACION
     PUNTO
     PUNTO_COMA
+    RESTA
     RPARENTESIS
-    SLASH
+    STRING
+    SUB
+    SUMA
     TILDE
+    TRUE
     UNDERSCORE
 
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> comentario procedimientos
-Rule 2     comentario -> COMENTARIO
-Rule 3     procedimientos -> procedimiento
-Rule 4     procedimientos -> procedimientos procedimiento
-Rule 5     procedimiento -> PROC ID ( cuerpo_procedimiento )
-Rule 6     cuerpo_procedimiento -> instrucciones
-Rule 7     instrucciones -> instruccion
-Rule 8     instrucciones -> instrucciones instruccion
-Rule 9     instruccion -> asignacion
-Rule 10    instruccion -> llamada_procedimiento
-Rule 11    asignacion -> ID = expresion ;
-Rule 12    llamada_procedimiento -> CALL ( ID ) ;
-Rule 13    expresion -> NUMERO
-Rule 14    expresion -> ID
-Rule 15    expresion -> expresion SUMA expresion
-Rule 16    expresion -> expresion RESTA expresion
-Rule 17    expresion -> expresion MULTIPLICACION expresion
-Rule 18    expresion -> expresion DIVISION expresion
+Rule 1     program -> lista_comentarios code_block
+Rule 2     lista_comentarios -> comentario lista_comentarios
+Rule 3     lista_comentarios -> empty
+Rule 4     comentario -> COMENTARIO
+Rule 5     code_block -> group_proc PROC MASTER ( comentario statement code_block ) ; group_proc
+Rule 6     group_proc -> PROC VARIABLE ( COMENTARIO statement code_block ) ; group_proc
+Rule 7     group_proc -> empty
+Rule 8     statement -> new_variable_statement
+Rule 9     statement -> values_statement
+Rule 10    statement -> alter_statement
+Rule 11    statement -> alterb_statement
+Rule 12    statement -> condition_statement
+Rule 13    statement -> istrue_statement
+Rule 14    statement -> repeat_statement
+Rule 15    statement -> until_statement
+Rule 16    statement -> while_statement
+Rule 17    statement -> case_statement
+Rule 18    statement -> printvalues_statement
+Rule 19    statement -> signal_statement
+Rule 20    statement -> viewsignal_statement
+Rule 21    new_variable_statement -> NEW VARIABLE , ( DATATYPE , value ) ;
+Rule 22    values_statement -> VALUES ( VARIABLE , value ) ;
+Rule 23    alter_statement -> ALTER ( VARIABLE , OPERADOR , value ) ;
+Rule 24    alterb_statement -> ALTERB ( VARIABLE ) ;
+Rule 25    condition_statement -> expression COND_NUMERICA expression
+Rule 26    istrue_statement -> ISTRUE ( VARIABLE ) ;
+Rule 27    repeat_statement -> REPEAT ( code_block break_statement ) ;
+Rule 28    break_statement -> BREAK ;
+Rule 29    break_statement -> empty
+Rule 30    until_statement -> UNTIL code_block condition ;
+Rule 31    condition -> expression COND_NUMERICA expression
+Rule 32    while_statement -> WHILE expression ( code_block ) ;
+Rule 33    case_statement -> CASE VARIABLE case_when_statements else_statement ;
+Rule 34    case_when_statements -> case_when_statement case_when_statements
+Rule 35    case_when_statements -> empty
+Rule 36    case_when_statement -> WHEN value THEN code_block
+Rule 37    else_statement -> ELSE code_block
+Rule 38    else_statement -> empty
+Rule 39    printvalues_statement -> PRINTVALUES ( VARIABLE ) ;
+Rule 40    signal_statement -> SIGNAL ( VARIABLE , value ) ;
+Rule 41    viewsignal_statement -> VIEWSIGNAL ( VARIABLE ) ;
+Rule 42    expression -> value
+Rule 43    expression -> VARIABLE
+Rule 44    expression -> ( expression )
+Rule 45    expression -> expression + expression
+Rule 46    expression -> expression - expression
+Rule 47    expression -> expression * expression
+Rule 48    expression -> expression / expression
+Rule 49    value -> NUMERO
+Rule 50    value -> BOOL
+Rule 51    empty -> <empty>
 
 Terminals, with rules where they appear
 
-(                    : 5 12
-)                    : 5 12
-;                    : 11 12
-=                    : 11
+(                    : 5 6 21 22 23 24 26 27 32 39 40 41 44
+)                    : 5 6 21 22 23 24 26 27 32 39 40 41 44
+*                    : 47
++                    : 45
+,                    : 21 21 22 23 23 40
+-                    : 46
+/                    : 48
+;                    : 5 6 21 22 23 24 26 27 28 30 32 33 39 40 41
+ADD                  : 
+ALTER                : 23
+ALTERB               : 24
 ARROBA               : 
+BOOL                 : 50
+BREAK                : 28
+CALL                 : 
+CASE                 : 33
 COMA                 : 
-COMENTARIO           : 2
+COMENTARIO           : 4 6
 COMILLAS             : 
+COND_NUMERICA        : 25 31
+DATATYPE             : 21
 DER_EXCLAMACION      : 
 DER_INTERROGACION    : 
-DIVISION             : 18
+DISTINTO_QUE         : 
+DIV                  : 
+DIVISION             : 
+ELSE                 : 37
 ENYE                 : 
+FALSE                : 
 GUION                : 
+ID                   : 
+IGUAL                : 
 IGUALDAD             : 
+ISTRUE               : 26
 IZQ_EXCLAMACION      : 
 IZQ_INTERROGACION    : 
 LETRA                : 
 LPARENTESIS          : 
+MASTER               : 5
+MAYOR_IGUAL_QUE      : 
+MAYOR_QUE            : 
 MAYUSCULA            : 
-MULTIPLICACION       : 17
-NUMERO               : 13
+MENOR_IGUAL_QUE      : 
+MENOR_QUE            : 
+MUL                  : 
+MULTIPLICACION       : 
+NEW                  : 21
+NUMERO               : 49
+OPERADOR             : 23
+PRINTVALUES          : 39
+PROC                 : 5 6
 PUNTO                : 
 PUNTO_COMA           : 
-RESTA                : 16
+REPEAT               : 27
+RESTA                : 
 RPARENTESIS          : 
-SLASH                : 
-SUMA                 : 15
+SIGNAL               : 40
+STRING               : 
+SUB                  : 
+SUMA                 : 
+THEN                 : 36
 TILDE                : 
+TRUE                 : 
 UNDERSCORE           : 
+UNTIL                : 30
+VALUES               : 22
+VARIABLE             : 6 21 22 23 24 26 33 39 40 41 43
+VIEWSIGNAL           : 41
+WHEN                 : 36
+WHILE                : 32
 error                : 
 
 Nonterminals, with rules where they appear
 
-CALL                 : 12
-ID                   : 5 11 12 14
-PROC                 : 5
-asignacion           : 9
-comentario           : 1
-cuerpo_procedimiento : 5
-expresion            : 11 15 15 16 16 17 17 18 18
-instruccion          : 7 8
-instrucciones        : 6 8
-llamada_procedimiento : 10
-procedimiento        : 3 4
-procedimientos       : 1 4
+alter_statement      : 10
+alterb_statement     : 11
+break_statement      : 27
+case_statement       : 17
+case_when_statement  : 34
+case_when_statements : 33 34
+code_block           : 1 5 6 27 30 32 36 37
+comentario           : 2 5
+condition            : 30
+condition_statement  : 12
+else_statement       : 33
+empty                : 3 7 29 35 38
+expression           : 25 25 31 31 32 44 45 45 46 46 47 47 48 48
+group_proc           : 5 5 6
+istrue_statement     : 13
+lista_comentarios    : 1 2
+new_variable_statement : 8
+printvalues_statement : 18
 program              : 0
+repeat_statement     : 14
+signal_statement     : 19
+statement            : 5 6
+until_statement      : 15
+value                : 21 22 23 36 40 42
+values_statement     : 9
+viewsignal_statement : 20
+while_statement      : 16
 

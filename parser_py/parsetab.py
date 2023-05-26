@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'EQUAL ID INTEGER LPAREN PLUS RPARENexpression : INTEGER PLUS INTEGER'
+_lr_signature = "ADD ALTER ALTERB ARROBA BOOL BREAK CALL CASE COMA COMENTARIO COMILLAS COND_NUMERICA DATATYPE DER_EXCLAMACION DER_INTERROGACION DISTINTO_QUE DIV DIVISION ELSE ENYE FALSE GUION ID IGUAL IGUALDAD ISTRUE IZQ_EXCLAMACION IZQ_INTERROGACION LETRA LPARENTESIS MASTER MAYOR_IGUAL_QUE MAYOR_QUE MAYUSCULA MENOR_IGUAL_QUE MENOR_QUE MUL MULTIPLICACION NEW NUMERO OPERADOR PRINTVALUES PROC PUNTO PUNTO_COMA REPEAT RESTA RPARENTESIS SIGNAL STRING SUB SUMA THEN TILDE TRUE UNDERSCORE UNTIL VALUES VARIABLE VIEWSIGNAL WHEN WHILE\n    programa : lista_comentarios code_block\n    \n    lista_comentarios : comentario lista_comentarios\n                 | empty\n    \n    comentario : COMENTARIO\n    \n    code_block : PROC '(' statement code_block ')' ';'\n               | empty\n    \n    statement : new_variable_statement\n              | values_statement\n              | alter_statement\n              | alterb_statement\n              | condition_statement\n              | istrue_statement\n              | repeat_statement\n              | until_statement\n              | while_statement\n              | case_statement\n              | printvalues_statement\n              | signal_statement\n              | viewsignal_statement\n    \n    new_variable_statement : NEW VARIABLE ',' '(' DATATYPE ',' value ')' ';'\n    \n    values_statement : VALUES '(' VARIABLE ',' value ')' ';'\n    \n    alter_statement : ALTER '(' VARIABLE ',' OPERADOR ',' value ')' ';'\n    \n    alterb_statement : ALTERB '(' VARIABLE ')' ';'\n    \n    condition_statement : expression COND_NUMERICA expression\n    \n    istrue_statement : ISTRUE '(' VARIABLE ')' ';'\n    \n    repeat_statement : REPEAT '(' code_block break_statement ')' ';'\n    \n    break_statement : BREAK ';'\n                    | empty\n    \n    until_statement : UNTIL code_block condition ';'\n    \n    condition : expression COND_NUMERICA expression\n    \n    while_statement : WHILE expression '(' code_block ')' ';'\n    \n    case_statement : CASE VARIABLE case_when_statements else_statement ';'\n    \n    case_when_statements : case_when_statement case_when_statements\n                         | empty\n    \n    case_when_statement : WHEN value THEN code_block\n    \n    else_statement : ELSE code_block\n                   | empty\n    \n    printvalues_statement : PRINTVALUES '(' VARIABLE ')' ';'\n    \n    signal_statement : SIGNAL '(' VARIABLE ',' value ')' ';'\n    \n    viewsignal_statement : VIEWSIGNAL '(' VARIABLE ')' ';'\n    \n    expression : value\n               | VARIABLE\n               | '(' expression ')'\n               | expression '+' expression\n               | expression '-' expression\n               | expression '*' expression\n               | expression '/' expression\n    \n    value : NUMERO\n          | BOOL\n    \n    empty :\n    "
     
-_lr_action_items = {'INTEGER':([0,3,],[2,4,]),'$end':([1,4,],[0,-1,]),'PLUS':([2,],[3,]),}
+_lr_action_items = {'COMENTARIO':([0,3,5,],[5,5,-4,]),'PROC':([0,2,3,4,5,9,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,35,41,42,55,62,68,69,70,71,72,77,94,98,108,109,114,116,117,119,123,124,128,130,133,134,],[-50,7,-50,-3,-4,-2,7,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-42,-41,7,-48,-49,7,-43,-24,-44,-45,-46,-47,7,-29,7,-23,-25,-32,7,-38,-40,-26,-31,-21,-39,-20,-22,]),'$end':([0,1,2,3,4,5,6,8,9,85,],[-50,0,-50,-50,-3,-4,-1,-6,-2,-5,]),'(':([7,8,10,11,27,28,29,30,31,33,34,35,36,38,39,40,41,42,49,50,51,52,53,56,57,62,64,69,70,71,72,85,95,],[10,-6,11,11,-42,-41,46,47,48,54,55,-50,11,59,60,61,-48,-49,11,11,11,11,11,11,77,-43,86,-44,-45,-46,-47,-5,11,]),')':([8,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,41,42,43,44,55,62,67,68,69,70,71,72,73,74,77,82,84,85,91,93,94,96,106,108,109,111,114,117,118,119,123,124,127,128,129,130,133,134,],[-6,-50,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-42,-41,-48,-49,62,63,-50,-43,89,-24,-44,-45,-46,-47,90,-50,-50,102,104,-5,110,-28,-29,113,121,-23,-25,-27,-32,-38,126,-40,-26,-31,131,-21,132,-39,-20,-22,]),'VARIABLE':([8,10,11,26,35,36,37,46,47,48,49,50,51,52,53,54,56,59,60,61,85,95,],[-6,27,27,45,-50,27,58,65,66,67,27,27,27,27,27,73,27,82,83,84,-5,27,]),'NUMERO':([8,10,11,35,36,49,50,51,52,53,56,81,85,87,95,103,120,122,],[-6,41,41,-50,41,41,41,41,41,41,41,41,-5,41,41,41,41,41,]),'BOOL':([8,10,11,35,36,49,50,51,52,53,56,81,85,87,95,103,120,122,],[-6,42,42,-50,42,42,42,42,42,42,42,42,-5,42,42,42,42,42,]),'BREAK':([8,55,74,85,],[-6,-50,92,-5,]),';':([8,27,28,41,42,58,62,63,69,70,71,72,75,78,79,80,85,89,90,92,97,98,99,100,102,104,110,112,113,115,116,121,125,126,131,132,],[-6,-42,-41,-48,-49,-50,-43,85,-44,-45,-46,-47,94,-50,-50,-34,-5,108,109,111,114,-50,-37,-33,117,119,123,-30,124,-36,-50,128,-35,130,133,134,]),'WHEN':([8,58,79,85,116,125,],[-6,81,81,-5,-50,-35,]),'ELSE':([8,58,78,79,80,85,100,116,125,],[-6,-50,98,-50,-34,-5,-33,-50,-35,]),'NEW':([10,],[26,]),'VALUES':([10,],[29,]),'ALTER':([10,],[30,]),'ALTERB':([10,],[31,]),'ISTRUE':([10,],[33,]),'REPEAT':([10,],[34,]),'UNTIL':([10,],[35,]),'WHILE':([10,],[36,]),'CASE':([10,],[37,]),'PRINTVALUES':([10,],[38,]),'SIGNAL':([10,],[39,]),'VIEWSIGNAL':([10,],[40,]),'COND_NUMERICA':([27,28,32,41,42,62,69,70,71,72,76,],[-42,-41,49,-48,-49,-43,-44,-45,-46,-47,95,]),'+':([27,28,32,41,42,43,57,62,68,69,70,71,72,76,112,],[-42,-41,50,-48,-49,50,50,-43,50,50,50,50,50,50,50,]),'-':([27,28,32,41,42,43,57,62,68,69,70,71,72,76,112,],[-42,-41,51,-48,-49,51,51,-43,51,51,51,51,51,51,51,]),'*':([27,28,32,41,42,43,57,62,68,69,70,71,72,76,112,],[-42,-41,52,-48,-49,52,52,-43,52,52,52,52,52,52,52,]),'/':([27,28,32,41,42,43,57,62,68,69,70,71,72,76,112,],[-42,-41,53,-48,-49,53,53,-43,53,53,53,53,53,53,53,]),'THEN':([41,42,101,],[-48,-49,116,]),',':([45,65,66,83,105,107,],[64,87,88,103,120,122,]),'DATATYPE':([86,],[105,]),'OPERADOR':([88,],[107,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expression':([0,],[1,]),}
+_lr_goto_items = {'programa':([0,],[1,]),'lista_comentarios':([0,3,],[2,9,]),'comentario':([0,3,],[3,3,]),'empty':([0,2,3,12,35,55,58,74,77,78,79,98,116,],[4,8,4,8,8,8,80,93,8,99,80,8,8,]),'code_block':([2,12,35,55,77,98,116,],[6,44,56,74,96,115,125,]),'statement':([10,],[12,]),'new_variable_statement':([10,],[13,]),'values_statement':([10,],[14,]),'alter_statement':([10,],[15,]),'alterb_statement':([10,],[16,]),'condition_statement':([10,],[17,]),'istrue_statement':([10,],[18,]),'repeat_statement':([10,],[19,]),'until_statement':([10,],[20,]),'while_statement':([10,],[21,]),'case_statement':([10,],[22,]),'printvalues_statement':([10,],[23,]),'signal_statement':([10,],[24,]),'viewsignal_statement':([10,],[25,]),'value':([10,11,36,49,50,51,52,53,56,81,87,95,103,120,122,],[28,28,28,28,28,28,28,28,28,101,106,28,118,127,129,]),'expression':([10,11,36,49,50,51,52,53,56,95,],[32,43,57,68,69,70,71,72,76,112,]),'condition':([56,],[75,]),'case_when_statements':([58,79,],[78,100,]),'case_when_statement':([58,79,],[79,79,]),'break_statement':([74,],[91,]),'else_statement':([78,],[97,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,6 +26,55 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> expression","S'",1,None,None,None),
-  ('expression -> INTEGER PLUS INTEGER','expression',3,'p_expression','yacc_parser.py',7),
+  ("S' -> programa","S'",1,None,None,None),
+  ('programa -> lista_comentarios code_block','programa',2,'p_programa','yacc_parser.py',7),
+  ('lista_comentarios -> comentario lista_comentarios','lista_comentarios',2,'p_lista_comentarios','yacc_parser.py',13),
+  ('lista_comentarios -> empty','lista_comentarios',1,'p_lista_comentarios','yacc_parser.py',14),
+  ('comentario -> COMENTARIO','comentario',1,'p_comentario','yacc_parser.py',20),
+  ('code_block -> PROC ( statement code_block ) ;','code_block',6,'p_code_block','yacc_parser.py',26),
+  ('code_block -> empty','code_block',1,'p_code_block','yacc_parser.py',27),
+  ('statement -> new_variable_statement','statement',1,'p_statement','yacc_parser.py',33),
+  ('statement -> values_statement','statement',1,'p_statement','yacc_parser.py',34),
+  ('statement -> alter_statement','statement',1,'p_statement','yacc_parser.py',35),
+  ('statement -> alterb_statement','statement',1,'p_statement','yacc_parser.py',36),
+  ('statement -> condition_statement','statement',1,'p_statement','yacc_parser.py',37),
+  ('statement -> istrue_statement','statement',1,'p_statement','yacc_parser.py',38),
+  ('statement -> repeat_statement','statement',1,'p_statement','yacc_parser.py',39),
+  ('statement -> until_statement','statement',1,'p_statement','yacc_parser.py',40),
+  ('statement -> while_statement','statement',1,'p_statement','yacc_parser.py',41),
+  ('statement -> case_statement','statement',1,'p_statement','yacc_parser.py',42),
+  ('statement -> printvalues_statement','statement',1,'p_statement','yacc_parser.py',43),
+  ('statement -> signal_statement','statement',1,'p_statement','yacc_parser.py',44),
+  ('statement -> viewsignal_statement','statement',1,'p_statement','yacc_parser.py',45),
+  ('new_variable_statement -> NEW VARIABLE , ( DATATYPE , value ) ;','new_variable_statement',9,'p_new_variable_statement','yacc_parser.py',51),
+  ('values_statement -> VALUES ( VARIABLE , value ) ;','values_statement',7,'p_values_statement','yacc_parser.py',57),
+  ('alter_statement -> ALTER ( VARIABLE , OPERADOR , value ) ;','alter_statement',9,'p_alter_statement','yacc_parser.py',63),
+  ('alterb_statement -> ALTERB ( VARIABLE ) ;','alterb_statement',5,'p_alterb_statement','yacc_parser.py',69),
+  ('condition_statement -> expression COND_NUMERICA expression','condition_statement',3,'p_condition_statement','yacc_parser.py',75),
+  ('istrue_statement -> ISTRUE ( VARIABLE ) ;','istrue_statement',5,'p_istrue_statement','yacc_parser.py',81),
+  ('repeat_statement -> REPEAT ( code_block break_statement ) ;','repeat_statement',6,'p_repeat_statement','yacc_parser.py',87),
+  ('break_statement -> BREAK ;','break_statement',2,'p_break_statement','yacc_parser.py',93),
+  ('break_statement -> empty','break_statement',1,'p_break_statement','yacc_parser.py',94),
+  ('until_statement -> UNTIL code_block condition ;','until_statement',4,'p_until_statement','yacc_parser.py',100),
+  ('condition -> expression COND_NUMERICA expression','condition',3,'p_condition','yacc_parser.py',105),
+  ('while_statement -> WHILE expression ( code_block ) ;','while_statement',6,'p_while_statement','yacc_parser.py',110),
+  ('case_statement -> CASE VARIABLE case_when_statements else_statement ;','case_statement',5,'p_case_statement','yacc_parser.py',116),
+  ('case_when_statements -> case_when_statement case_when_statements','case_when_statements',2,'p_case_when_statements','yacc_parser.py',121),
+  ('case_when_statements -> empty','case_when_statements',1,'p_case_when_statements','yacc_parser.py',122),
+  ('case_when_statement -> WHEN value THEN code_block','case_when_statement',4,'p_case_when_statement','yacc_parser.py',127),
+  ('else_statement -> ELSE code_block','else_statement',2,'p_else_statement','yacc_parser.py',133),
+  ('else_statement -> empty','else_statement',1,'p_else_statement','yacc_parser.py',134),
+  ('printvalues_statement -> PRINTVALUES ( VARIABLE ) ;','printvalues_statement',5,'p_printvalues_statement','yacc_parser.py',140),
+  ('signal_statement -> SIGNAL ( VARIABLE , value ) ;','signal_statement',7,'p_signal_statement','yacc_parser.py',146),
+  ('viewsignal_statement -> VIEWSIGNAL ( VARIABLE ) ;','viewsignal_statement',5,'p_viewsignal_statement','yacc_parser.py',152),
+  ('expression -> value','expression',1,'p_expression','yacc_parser.py',158),
+  ('expression -> VARIABLE','expression',1,'p_expression','yacc_parser.py',159),
+  ('expression -> ( expression )','expression',3,'p_expression','yacc_parser.py',160),
+  ('expression -> expression + expression','expression',3,'p_expression','yacc_parser.py',161),
+  ('expression -> expression - expression','expression',3,'p_expression','yacc_parser.py',162),
+  ('expression -> expression * expression','expression',3,'p_expression','yacc_parser.py',163),
+  ('expression -> expression / expression','expression',3,'p_expression','yacc_parser.py',164),
+  ('value -> NUMERO','value',1,'p_value','yacc_parser.py',170),
+  ('value -> BOOL','value',1,'p_value','yacc_parser.py',171),
+  ('empty -> <empty>','empty',0,'p_empty','yacc_parser.py',177),
 ]

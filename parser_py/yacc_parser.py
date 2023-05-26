@@ -1,33 +1,37 @@
 import ply.yacc as yacc
-from lexer import tokens
+from lex_parser import tokens
 
 # Regla inicial
 def p_program(p):
     '''
-    program : comment_list code_block
+    program : lista_comentarios code_block
     '''
     # Aquí puedes realizar las acciones necesarias para procesar el programa completo
 
-def p_comment_list(p):
+def p_lista_comentarios(p):
     '''
-    comment_list : comment comment_list
+    lista_comentarios : comentario lista_comentarios
                  | empty
     '''
     # Aquí puedes realizar las acciones necesarias para procesar los comentarios
 
-def p_comment(p):
+def p_comentario(p):
     '''
-    comment : COMMENT
+    comentario : COMENTARIO
     '''
     # Aquí puedes realizar las acciones necesarias para procesar un comentario
 
 def p_code_block(p):
     '''
-    code_block : statement code_block
+    code_block :  group_proc PROC MASTER '(' comentario statement code_block ')' ';' group_proc
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar el bloque de código
+def p_group_proc(p):
+    '''
+    group_proc : PROC VARIABLE '(' COMENTARIO statement code_block ')' ';' group_proc
                | empty
     '''
     # Aquí puedes realizar las acciones necesarias para procesar el bloque de código
-
 def p_statement(p):
     '''
     statement : new_variable_statement
@@ -48,37 +52,37 @@ def p_statement(p):
 
 def p_new_variable_statement(p):
     '''
-    new_variable_statement : NEW VARNAME ',' '(' DATATYPE ',' value ')' ';'
+    new_variable_statement : NEW VARIABLE ',' '(' DATATYPE ',' value ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia New
 
 def p_values_statement(p):
     '''
-    values_statement : VALUES '(' VARNAME ',' value ')' ';'
+    values_statement : VALUES '(' VARIABLE ',' value ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Values
 
 def p_alter_statement(p):
     '''
-    alter_statement : ALTER '(' VARNAME ',' OPERATOR ',' value ')' ';'
+    alter_statement : ALTER '(' VARIABLE ',' OPERADOR ',' value ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Alter
 
 def p_alterb_statement(p):
     '''
-    alterb_statement : ALTERB '(' VARNAME ')' ';'
+    alterb_statement : ALTERB '(' VARIABLE ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia AlterB
 
 def p_condition_statement(p):
     '''
-    condition_statement : expression COMPARISON_OPERATOR expression
+    condition_statement : expression COND_NUMERICA expression
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia condicional
 
 def p_istrue_statement(p):
     '''
-    istrue_statement : ISTRUE '(' VARNAME ')' ';'
+    istrue_statement : ISTRUE '(' VARIABLE ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia IsTrue
 
@@ -97,10 +101,14 @@ def p_break_statement(p):
 
 def p_until_statement(p):
     '''
-    until_statement : UNTIL code_block CONDITION ';'
+    until_statement : UNTIL code_block condition ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Until
-
+def p_condition(p):
+    '''
+    condition : expression COND_NUMERICA expression
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una condición
 def p_while_statement(p):
     '''
     while_statement : WHILE expression '(' code_block ')' ';'
@@ -109,7 +117,7 @@ def p_while_statement(p):
 
 def p_case_statement(p):
     '''
-    case_statement : CASE VARNAME case_when_statements else_statement ';'
+    case_statement : CASE VARIABLE case_when_statements else_statement ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Case
 def p_case_when_statements(p):
@@ -133,26 +141,26 @@ def p_else_statement(p):
 
 def p_printvalues_statement(p):
     '''
-    printvalues_statement : PRINTVALUES '(' VARNAME ')' ';'
+    printvalues_statement : PRINTVALUES '(' VARIABLE ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia PrintValues
 
 def p_signal_statement(p):
     '''
-    signal_statement : SIGNAL '(' VARNAME ',' value ')' ';'
+    signal_statement : SIGNAL '(' VARIABLE ',' value ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Signal
 
 def p_viewsignal_statement(p):
     '''
-    viewsignal_statement : VIEWSIGNAL '(' VARNAME ')' ';'
+    viewsignal_statement : VIEWSIGNAL '(' VARIABLE ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia ViewSignal
 
 def p_expression(p):
     '''
     expression : value
-               | VARNAME
+               | VARIABLE
                | '(' expression ')'
                | expression '+' expression
                | expression '-' expression
@@ -163,9 +171,8 @@ def p_expression(p):
 
 def p_value(p):
     '''
-    value : NUMBER
-          | STRING
-          | BOOLEAN
+    value : NUMERO
+          | BOOL
     '''
     # Aquí puedes realizar las acciones necesarias para procesar un valor
 
@@ -186,16 +193,21 @@ parser = yacc.yacc()
 
 # Prueba del parser
 data = '''
-// Nombre y funcionalidad del código
-
+//Nombre y funcionalidad del código
 Proc @Master
 (
-  // Instrucciones
+  
+    Values (@variable2, True);
+    While IsTrue(@variale2)
+        ( Signal(@variale2, 1);
+        AlterB (@variable2);
 );
-
-Proc nombre_del_procedimiento
-(
-  // Instrucciones
-);
-'''
+    // Comentario de prueba
+    Values (@variable1, 100);
+    While @variable1 > 10
+        ( Signal(@variale1, 1);
+        Values (@variable1,
+        Alter (@variable1,SUB, 10));
+ );
+);'''
 parser.parse(data)
