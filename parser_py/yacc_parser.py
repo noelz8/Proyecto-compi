@@ -1,98 +1,188 @@
-
 import ply.yacc as yacc
-from lex_parser import tokens
+from lexer import tokens
 
-# Reglas de precedencia
-precedence = (
-    ('left', 'SUMA', 'RESTA'),
-    ('left', 'MULTIPLICACION', 'DIVISION'),
-)
-
-# Definición de la gramática
+# Regla inicial
 def p_program(p):
     '''
-    program : comentario procedimientos
+    program : comment_list code_block
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar el programa completo
 
-def p_comentario(p):
+def p_comment_list(p):
     '''
-    comentario : COMENTARIO
+    comment_list : comment comment_list
+                 | empty
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar los comentarios
 
-def p_procedimientos(p):
+def p_comment(p):
     '''
-    procedimientos : procedimiento
-                   | procedimientos procedimiento
+    comment : COMMENT
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar un comentario
 
-def p_procedimiento(p):
+def p_code_block(p):
     '''
-    procedimiento : PROC ID '(' cuerpo_procedimiento ')'
+    code_block : statement code_block
+               | empty
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar el bloque de código
 
-def p_cuerpo_procedimiento(p):
+def p_statement(p):
     '''
-    cuerpo_procedimiento : instrucciones
+    statement : new_variable_statement
+              | values_statement
+              | alter_statement
+              | alterb_statement
+              | condition_statement
+              | istrue_statement
+              | repeat_statement
+              | until_statement
+              | while_statement
+              | case_statement
+              | printvalues_statement
+              | signal_statement
+              | viewsignal_statement
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia
 
-def p_instrucciones(p):
+def p_new_variable_statement(p):
     '''
-    instrucciones : instruccion
-                  | instrucciones instruccion
+    new_variable_statement : NEW VARNAME ',' '(' DATATYPE ',' value ')' ';'
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia New
 
-def p_instruccion(p):
+def p_values_statement(p):
     '''
-    instruccion : asignacion
-                | llamada_procedimiento
+    values_statement : VALUES '(' VARNAME ',' value ')' ';'
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia Values
 
-def p_asignacion(p):
+def p_alter_statement(p):
     '''
-    asignacion : ID '=' expresion ';'
+    alter_statement : ALTER '(' VARNAME ',' OPERATOR ',' value ')' ';'
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia Alter
 
-def p_llamada_procedimiento(p):
+def p_alterb_statement(p):
     '''
-    llamada_procedimiento : CALL '(' ID ')' ';'
+    alterb_statement : ALTERB '(' VARNAME ')' ';'
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia AlterB
 
-def p_expresion(p):
+def p_condition_statement(p):
     '''
-    expresion : NUMERO
-              | ID
-              | expresion SUMA expresion
-              | expresion RESTA expresion
-              | expresion MULTIPLICACION expresion
-              | expresion DIVISION expresion
+    condition_statement : expression COMPARISON_OPERATOR expression
     '''
-    # Acciones semánticas correspondientes
-    # ...
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia condicional
 
-# Manejo de errores de análisis sintáctico
+def p_istrue_statement(p):
+    '''
+    istrue_statement : ISTRUE '(' VARNAME ')' ';'
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia IsTrue
+
+def p_repeat_statement(p):
+    '''
+    repeat_statement : REPEAT '(' code_block break_statement ')' ';'
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia Repeat
+
+def p_break_statement(p):
+    '''
+    break_statement : BREAK ';'
+                    | empty
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia Break
+
+def p_until_statement(p):
+    '''
+    until_statement : UNTIL code_block CONDITION ';'
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia Until
+
+def p_while_statement(p):
+    '''
+    while_statement : WHILE expression '(' code_block ')' ';'
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia While
+
+def p_case_statement(p):
+    '''
+    case_statement : CASE VARNAME case_when_statements else_statement ';'
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia Case
+def p_case_when_statements(p):
+    '''
+    case_when_statements : case_when_statement case_when_statements
+                         | empty
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar los casos When en una sentencia Case
+def p_case_when_statement(p):
+    '''
+    case_when_statement : WHEN value THEN code_block
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar un caso When en una sentencia Case
+
+def p_else_statement(p):
+    '''
+    else_statement : ELSE code_block
+                   | empty
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar la cláusula Else en una sentencia Case
+
+def p_printvalues_statement(p):
+    '''
+    printvalues_statement : PRINTVALUES '(' VARNAME ')' ';'
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia PrintValues
+
+def p_signal_statement(p):
+    '''
+    signal_statement : SIGNAL '(' VARNAME ',' value ')' ';'
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia Signal
+
+def p_viewsignal_statement(p):
+    '''
+    viewsignal_statement : VIEWSIGNAL '(' VARNAME ')' ';'
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una sentencia ViewSignal
+
+def p_expression(p):
+    '''
+    expression : value
+               | VARNAME
+               | '(' expression ')'
+               | expression '+' expression
+               | expression '-' expression
+               | expression '*' expression
+               | expression '/' expression
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar una expresión matemática
+
+def p_value(p):
+    '''
+    value : NUMBER
+          | STRING
+          | BOOLEAN
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar un valor
+
+def p_empty(p):
+    '''
+    empty :
+    '''
+    pass
+
+# Manejo de errores de sintaxis
 def p_error(p):
-    print("Error de sintaxis:", p)
+    print("Error de sintaxis en la entrada:", p)
 
-# Construir el parser
+# Construcción del parser
 parser = yacc.yacc()
+
+
 
 # Prueba del parser
 data = '''
