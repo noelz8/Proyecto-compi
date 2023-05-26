@@ -23,15 +23,33 @@ def p_comentario(p):
 
 def p_code_block(p):
     '''
-    code_block :  group_proc PROC MASTER '(' comentario statement code_block ')' ';' group_proc
+    code_block : group_proc PROC master '(' comentario statement code_block ')' ';'
+               | group_proc PROC master '(' comentario statement ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar el bloque de código
+
+def p_master(p):
+    '''
+    master : MASTER
+    '''
+    # Aquí puedes realizar las acciones necesarias para procesar el master
+
 def p_group_proc(p):
     '''
     group_proc : PROC VARIABLE '(' COMENTARIO statement code_block ')' ';' group_proc
+               | PROC VARIABLE '(' COMENTARIO statement ')' ';' group_proc
                | empty
     '''
-    # Aquí puedes realizar las acciones necesarias para procesar el bloque de código
+    # Aquí puedes realizar las acciones necesarias para procesar el bloque de códig
+
+
+def p_operador(p):
+    '''
+    operador : ADD
+            | SUB
+            | MUL
+            | DIV
+    '''
 def p_statement(p):
     '''
     statement : new_variable_statement
@@ -64,7 +82,7 @@ def p_values_statement(p):
 
 def p_alter_statement(p):
     '''
-    alter_statement : ALTER '(' VARIABLE ',' OPERADOR ',' value ')' ';'
+    alter_statement : ALTER '(' VARIABLE ',' operador ',' value ')' ';'
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Alter
 

@@ -68,7 +68,6 @@ tokens = [
     'FALSE',
     'STRING',
     'COND_NUMERICA',
-    'OPERADOR',
     'DATATYPE',
     'BOOL'
 ]
@@ -76,36 +75,6 @@ datatype ={
     'Num':'NUM',
     'Bool':'BOOL'
 }
-
-reserved = {
-    
-    'Proc': 'PROC',
-    '@Master': 'MASTER',
-    'CALL': 'CALL',
-    'New': 'NEW',
-    'Alter': 'ALTER',
-    'AlterB':'ALTERB',
-    'Signal': 'SIGNAL',
-    'ViewSignal':'VIEWSIGNAL',
-    'IsTrue': 'ISTRUE',
-    'Repeat':'REPEAT',
-    'break': 'BREAK',
-    'Until': 'UNTIL',
-    'While': 'WHILE',
-    'Case': 'CASE',
-    'When':'WHEN',
-    'Then':'THEN',
-    'else': 'ELSE',
-    'PrintValues': 'PRINTVALUES',
-    'Values': 'VALUES',
-    'ADD':'ADD',
-    'SUB':'SUB',
-    'MUL':'MUL',
-    'DIV':'DIV'  
-}
-
-
-
 
 # Definición de tokens
 t_TILDE = r'[áéíóúÁÉÍÓÚ]'
@@ -143,22 +112,142 @@ cond_Numericas = {
     '>=':'MAYOR_IGUAL_QUE',
     '<=':'MENOR_IGUAL_QUE'
 }
+# Definicion de palabras reservadas
+def t_MASTER(t):
+    r'@Master'
+    t.type = 'MASTER'
+    return t
+
+def t_CALL(t):
+    r'CALL'
+    t.type = 'CALL'
+    return t
+
+def t_NEW(t):
+    r'New'
+    t.type = 'NEW'
+    return t
+
+def t_ALTER(t):
+    r'Alter'
+    t.type = 'ALTER'
+    return t
+
+def t_ALTERB(t):
+    r'AlterB'
+    t.type = 'ALTERB'
+    return t
+
+def t_SIGNAL(t):
+    r'Signal'
+    t.type = 'SIGNAL'
+    return t
+
+def t_VIEWSIGNAL(t):
+    r'ViewSignal'
+    t.type = 'VIEWSIGNAL'
+    return t
+
+def t_ISTRUE(t):
+    r'IsTrue'
+    t.type = 'ISTRUE'
+    return t
+
+def t_REPEAT(t):
+    r'Repeat'
+    t.type = 'REPEAT'
+    return t
+
+def t_BREAK(t):
+    r'break'
+    t.type = 'BREAK'
+    return t
+
+def t_UNTIL(t):
+    r'Until'
+    t.type = 'UNTIL'
+    return t
+
+def t_WHILE(t):
+    r'While'
+    t.type = 'WHILE'
+    return t
+
+def t_CASE(t):
+    r'Case'
+    t.type = 'CASE'
+    return t
+
+def t_WHEN(t):
+    r'When'
+    t.type = 'WHEN'
+    return t
+
+def t_THEN(t):
+    r'Then'
+    t.type = 'THEN'
+    return t
+
+def t_ELSE(t):
+    r'else'
+    t.type = 'ELSE'
+    return t
+
+def t_PRINTVALUES(t):
+    r'PrintValues'
+    t.type = 'PRINTVALUES'
+    return t
+
+def t_VALUES(t):
+    r'Values'
+    t.type = 'VALUES'
+    return t
+
+def t_ADD(t):
+    r'ADD'
+    t.type = 'ADD'
+    return t
+
+def t_SUB(t):
+    r'SUB'
+    t.type = 'SUB'
+    return t
+
+def t_MUL(t):
+    r'MUL'
+    t.type = 'MUL'
+    return t
+
+def t_DIV(t):
+    r'DIV'
+    t.type = 'DIV'
+    return t
+
+def t_TRUE(t):
+    r'True'
+    t.type = 'TRUE'
+    return t
+
+def t_FALSE(t):
+    r'False'
+    t.type = 'FALSE'
+    return t
+
+def t_PROC(t):
+    r'Proc'
+    t.type = 'PROC'
+    return t
+
 def t_COMENTARIO(t):
     r'\/\/.*'
     t.type = 'COMENTARIO'
     return t  # Descarta los comentarios
-
 
 def t_DATATYPE(t):
     r'Num|Bool'
     t.type = datatype.get(t.value)
     return t
 
-# Regla para booleanos
-def t_BOOL(t):
-    r'True|False'
-    t.type = reserved.get(t.value)
-    return t
 
 # Regla para la variable
 def t_VARIABLE(t):
@@ -173,16 +262,10 @@ def t_VARIABLE(t):
         print("Error: La variable debe iniciar con una arroba (@)")
         t.lexer.skip(1)  
     else:
-        # Verificar si es una palabra reservada
-        if t.value in reserved:
-            t.type = reserved[t.value]
         return t
+    
 
-# Regla para el operador
-def t_OPERADOR(t):
-    r'ADD|SUB|MUL|DIV'
-    t.type = reserved.get(t.value)
-    return t  
+
 
 
 def t_COND_NUMERICA(t):
@@ -190,10 +273,6 @@ def t_COND_NUMERICA(t):
     t.type = cond_Numericas.get(t.value)
     return t
 
-def t_RESERVED(t):
-    r'[a-zA-Z_@][a-zA-Z0-9_]*'
-    t.type = reserved.get(t.value, 'ID')
-    return t
 
 # Regla para manejar saltos de línea
 def t_newline(t):
@@ -207,3 +286,27 @@ def t_error(t):
 
 # Crear el analizador léxico
 lexer = lex.lex()
+"""data = '''//Nombre y funcionalidad del código
+
+Proc @Master
+(
+  
+    Values (@variable2, True);
+    While IsTrue(@variale2)
+        ( Signal(@variale2, 1);
+        AlterB (@variable2);
+);
+    // Comentario de prueba
+    Values (@variable1, 100);
+    While @variable1 > 10
+        ( Signal(@variale1, 1);
+        Values (@variable1,
+        Alter (@variable1,SUB, 10));
+ );
+);'''
+lexer.input(data)
+while True:
+    token = lexer.token()
+    if not token:
+        break
+    print(token)"""
