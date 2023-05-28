@@ -5,6 +5,8 @@ from tkinter import filedialog
 import subprocess
 import sys
 
+#Variables Globales
+archivo_actual = ""
 
 
 # Crear la ventana principal
@@ -13,15 +15,12 @@ ventana = tk.Tk()
 ventana.title("Visual Studio IDE")
 ventana.geometry("800x500")
 
-
-
-
 # Función para cerrar la ventana
 def cerrar_ventana():
     ventana.destroy()
 
 
-def compileCode():
+def compilar_codigo():
     codigo = editor.get("1.0", tk.END)
     
     # Clear the existing text in the console widget
@@ -52,13 +51,17 @@ class ConsolaRedireccionada:
     def flush(self):
         pass
 
-
-# Crear un contenedor para organizar los elementos
+# Crear un contenedor para organizar los elementos del resultado de la compilacion
 contenedor = tk.Frame(ventana)
 contenedor.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+
 # Crear un widget para que muestre resultados de la compilación
 texto_consola = scrolledtext.ScrolledText(contenedor, width=80, height=10, wrap=tk.WORD)
 texto_consola.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+
+
+
+# Funciones realacionadas con el manejo de archivos
 
 # Función para cargar el archivo
 def cargarArchivo():
@@ -69,16 +72,42 @@ def cargarArchivo():
         editor.insert(tk.INSERT, contenido)
         archivo.close()
 
+# Funcion para guardar cambios en un archivo ya existente
+def guardar():
+    global archivo_actual
+    contenido = editor.get("1.0", tk.END)
+    if archivo_actual:
+        with open(archivo_actual, "w") as archivo:
+            archivo.write(contenido)
+        print("Archivo guardado correctamente.")
+    else:
+        guardar_como()
+
+
+# Función para guardar el contenido en un archivo seleccionado por el usuario
+def guardar_como():
+    global archivo_actual
+    contenido = editor.get("1.0", tk.END)
+    archivo = filedialog.asksaveasfile(defaultextension=".txt", filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+    if archivo:
+        archivo.write(contenido)
+        archivo_actual = archivo.name
+        archivo.close()
+        print("Archivo guardado correctamente.")
 
 
 
-# Crear un widget de texto para el código
+
+
+# Crear un widget de texto para el código (editor)
 editor = scrolledtext.ScrolledText(ventana, width=80, height=25, wrap=tk.WORD)
 editor.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
 #Agregar de fuente al texto (editor)
 fuente = font.Font(family = "Inconsolata", size =11)
 editor.configure(font = fuente)
-#Agregar fuente a los botones
+
+
 
 
 # Crear una barra de menú principal
@@ -87,18 +116,19 @@ menuBar = tk.Menu(ventana)
 # Crear barra de menú para archivo
 menu_archivo = tk.Menu(menuBar,tearoff=0)
 menu_archivo.add_command(label="Abrir", command=cargarArchivo)
+menu_archivo.add_command(label="Guardar", command=guardar)
+menu_archivo.add_command(label="Guardar como", command=guardar_como)
 menu_archivo.add_command(label="Salir", command=cerrar_ventana)
 menuBar.add_cascade(label = "Archivo",menu=menu_archivo)
 
 # Crear una barra menú para compilar 
 menu_run = tk.Menu(menuBar,tearoff=0)
 menu_run.add_command(label="Compilar")
-menu_run.add_command(label="Ejecutar", command=compileCode)
+menu_run.add_command(label="Ejecutar", command=compilar_codigo)
 menuBar.add_cascade(label = "Run",menu=menu_run)
 
+# Añade el menuBar a la ventana
 ventana.config(menu=menuBar)
-
-
 
 # Bucle principal
 ventana.mainloop()
