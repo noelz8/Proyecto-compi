@@ -9,10 +9,11 @@ import sys
 archivo_actual = ""
 
 
+
 # Crear la ventana principal
 ventana = tk.Tk()
 # Configurar propiedades de la ventana
-ventana.title("Visual Studio IDE")
+ventana.title("Visual Studio Braille Read")
 ventana.geometry("800x500")
 
 # Función para cerrar la ventana
@@ -32,7 +33,7 @@ def compilar_codigo():
     # Aquí debes realizar el proceso de compilación adecuado para el lenguaje de programación específico
     # En este ejemplo, usaremos un comando genérico para simular la compilación en Python
     try:
-        resultado = subprocess.check_output(["python", "-c", codigo], universal_newlines=True,stderr=subprocess.PIPE,stdout=subprocess.PIPE,shell= True)
+        resultado = subprocess.check_output(["python", "-c", codigo], universal_newlines=True)
         print("El código se compiló correctamente.\n" + resultado)
     except subprocess.CalledProcessError as e:
         print("Ocurrió un error al compilar el código:")
@@ -58,6 +59,8 @@ contenedor.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 # Crear un widget para que muestre resultados de la compilación
 texto_consola = scrolledtext.ScrolledText(contenedor, width=80, height=10, wrap=tk.WORD)
 texto_consola.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+fuenteTerminal = font.Font(family = "Inconsolata", size =10,weight="bold")
+texto_consola.config(background="#535353",font=fuenteTerminal,foreground="#ffffff")
 
 
 
@@ -102,9 +105,8 @@ def guardar_como():
 # Crear un widget de texto para el código (editor)
 editor = scrolledtext.ScrolledText(ventana, width=80, height=25, wrap=tk.WORD)
 editor.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
-#Agregar de fuente al texto (editor)
 fuente = font.Font(family = "Inconsolata", size =11)
+#Agregar de fuente al texto (editor)
 editor.configure(font = fuente)
 
 
