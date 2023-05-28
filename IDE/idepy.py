@@ -1,23 +1,17 @@
 import tkinter as tk
 from tkinter import scrolledtext
 from tkinter import font
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
 import subprocess
 import sys
 
-
-#Valores fijos
-# Crear botones con el mismo tamaño
-ancho_boton = 10  # Ancho fijo para los botones
-altura_boton = 2  # Altura fija para los botones
-boton_estilo = {"relief": "solid", "borderwidth": 1}
 
 
 # Crear la ventana principal
 ventana = tk.Tk()
 # Configurar propiedades de la ventana
 ventana.title("Visual Studio IDE")
-ventana.geometry("800x600")
+ventana.geometry("800x500")
 
 
 
@@ -39,7 +33,7 @@ def compileCode():
     # Aquí debes realizar el proceso de compilación adecuado para el lenguaje de programación específico
     # En este ejemplo, usaremos un comando genérico para simular la compilación en Python
     try:
-        resultado = subprocess.check_output(["python", "-c", codigo], universal_newlines=True)
+        resultado = subprocess.check_output(["python", "-c", codigo], universal_newlines=True,stderr=subprocess.PIPE,stdout=subprocess.PIPE,shell= True)
         print("El código se compiló correctamente.\n" + resultado)
     except subprocess.CalledProcessError as e:
         print("Ocurrió un error al compilar el código:")
@@ -58,12 +52,11 @@ class ConsolaRedireccionada:
     def flush(self):
         pass
 
+
 # Crear un contenedor para organizar los elementos
-# Create a container to organize the elements
 contenedor = tk.Frame(ventana)
 contenedor.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-
-# Create the scrolled text widget for the console
+# Crear un widget para que muestre resultados de la compilación
 texto_consola = scrolledtext.ScrolledText(contenedor, width=80, height=10, wrap=tk.WORD)
 texto_consola.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
@@ -78,6 +71,7 @@ def cargarArchivo():
 
 
 
+
 # Crear un widget de texto para el código
 editor = scrolledtext.ScrolledText(ventana, width=80, height=25, wrap=tk.WORD)
 editor.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -85,19 +79,24 @@ editor.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 fuente = font.Font(family = "Inconsolata", size =11)
 editor.configure(font = fuente)
 #Agregar fuente a los botones
-fuente_boton = font.Font(family="Segoe UI", size=9, weight="bold")
 
 
+# Crear una barra de menú principal
+menuBar = tk.Menu(ventana)
 
-# Crear boton para cerrar la ventana del IDE
-boton_cerrar = tk.Button(ventana, text="Close", command=cerrar_ventana,font = fuente_boton,width=ancho_boton,height=altura_boton,**boton_estilo)
-boton_cerrar.pack()
-#Crear boton para compilar archivo
-boton_compilar = tk.Button(ventana, text="Compile", command=compileCode,font = fuente_boton,width=ancho_boton,height=altura_boton,**boton_estilo)
-boton_compilar.pack()
-#Crear boton para cargar archivo
-boton_compilar = tk.Button(ventana, text="Load File", command=cargarArchivo,font = fuente_boton,width=ancho_boton,height=altura_boton,**boton_estilo)
-boton_compilar.pack()
+# Crear barra de menú para archivo
+menu_archivo = tk.Menu(menuBar,tearoff=0)
+menu_archivo.add_command(label="Abrir", command=cargarArchivo)
+menu_archivo.add_command(label="Salir", command=cerrar_ventana)
+menuBar.add_cascade(label = "Archivo",menu=menu_archivo)
+
+# Crear una barra menú para compilar 
+menu_run = tk.Menu(menuBar,tearoff=0)
+menu_run.add_command(label="Compilar")
+menu_run.add_command(label="Ejecutar", command=compileCode)
+menuBar.add_cascade(label = "Run",menu=menu_run)
+
+ventana.config(menu=menuBar)
 
 
 
