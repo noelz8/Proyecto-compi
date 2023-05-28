@@ -26,13 +26,12 @@ ventana.geometry("800x600")
 def cerrar_ventana():
     ventana.destroy()
 
-# Función para compilar el archivo
+
 def compileCode():
     codigo = editor.get("1.0", tk.END)
     
-    # Crear un widget de texto para mostrar la salida de compilación
-    texto_consola = scrolledtext.ScrolledText(contenedor, width=80, height=10, wrap=tk.WORD)
-    texto_consola.pack(side = tk.BOTTOM,fill=tk.BOTH, expand=True)
+    # Clear the existing text in the console widget
+    texto_consola.delete('1.0', tk.END)
     
     # Redirigir la salida estándar al widget de texto
     sys.stdout = sys.stderr = ConsolaRedireccionada(texto_consola)
@@ -41,9 +40,12 @@ def compileCode():
     # En este ejemplo, usaremos un comando genérico para simular la compilación en Python
     try:
         resultado = subprocess.check_output(["python", "-c", codigo], universal_newlines=True)
-        print("El código se compiló correctamente.\n\nResultado:\n" + resultado)
+        print("El código se compiló correctamente.\n" + resultado)
     except subprocess.CalledProcessError as e:
-        print("Ocurrió un error al compilar el código:\n" + e.output)
+        print("Ocurrió un error al compilar el código:")
+        print("e.output:", e.output)
+        print("e.stderr:", e.stderr)
+
 
 # Clase personalizada para redirigir la salida estándar al widget de texto
 class ConsolaRedireccionada:
@@ -57,8 +59,13 @@ class ConsolaRedireccionada:
         pass
 
 # Crear un contenedor para organizar los elementos
+# Create a container to organize the elements
 contenedor = tk.Frame(ventana)
-contenedor.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+contenedor.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+
+# Create the scrolled text widget for the console
+texto_consola = scrolledtext.ScrolledText(contenedor, width=80, height=10, wrap=tk.WORD)
+texto_consola.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 # Función para cargar el archivo
 def cargarArchivo():
