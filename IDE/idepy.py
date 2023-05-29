@@ -59,6 +59,7 @@ contenedor.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 # Crear un widget para que muestre resultados de la compilación
 texto_consola = scrolledtext.ScrolledText(contenedor, width=80, height=10, wrap=tk.WORD)
 texto_consola.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+# Fuente de la terminal y colores de la terminal
 fuenteTerminal = font.Font(family = "Inconsolata", size =10,weight="bold")
 texto_consola.config(background="#535353",font=fuenteTerminal,foreground="#ffffff")
 
@@ -99,18 +100,43 @@ def guardar_como():
         print("Archivo guardado correctamente.")
 
 
+# Funcion para agregar lineas de codigo
+# Función para agregar líneas de código
+def agregar_linea_codigo(event):
+    contenido = editor.get("1.0", tk.END)
+    lineas_codigo = contenido.count('\n')
+    lineasCodigoTexto.delete(1.0, tk.END)
+    for i in range(1, lineas_codigo + 1):
+        lineasCodigoTexto.insert(tk.END, str(i) + "\n")
+    editor.yview_moveto(1.0)
+    lineasCodigoTexto.yview_moveto(1.0)
 
+def movimientoSincronizadoScrollText(event):
+    editor.yview_moveto(1.0)
+    lineasCodigoTexto.yview_moveto(1.0)
 
 
 # Crear un widget de texto para el código (editor)
 editor = scrolledtext.ScrolledText(ventana, width=80, height=25, wrap=tk.WORD)
-editor.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+editor.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 fuente = font.Font(family = "Inconsolata", size =11)
 #Agregar de fuente al texto (editor)
 editor.configure(font = fuente)
 
+# Crear un contenedor para las líneas de código
+lineasCodigoContenedor = tk.Frame(ventana)
+lineasCodigoContenedor.pack(side=tk.LEFT, fill=tk.Y)
+# Crear un widget de texto para las líneas de código
+lineasCodigoTexto = tk.Text(lineasCodigoContenedor, width=4, height=25, bg="lightgray", relief=tk.FLAT)
+lineasCodigoTexto.pack(side=tk.LEFT, fill=tk.Y)
+lineasCodigoTexto.configure(font= fuente)
 
 
+
+# Al presionar una tecla añade las lineas de codigo
+editor.bind("<KeyPress>", agregar_linea_codigo)
+editor.bind("<KeyPress-Up>",movimientoSincronizadoScrollText)
+editor.bind("<KeyPress-Down>",movimientoSincronizadoScrollText)
 
 # Crear una barra de menú principal
 menuBar = tk.Menu(ventana)
