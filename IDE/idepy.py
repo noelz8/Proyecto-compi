@@ -111,36 +111,42 @@ def agregar_linea_codigo(event):
     editor.yview_moveto(1.0)
     lineasCodigoTexto.yview_moveto(1.0)
 
-def movimientoSincronizadoScrollText(event):
-    editor.yview_moveto(1.0)
-    lineasCodigoTexto.yview_moveto(1.0)
+def movimientoSincronizadoScrollText(*args):
+    editor.yview(*args)
+    lineasCodigoTexto.yview(*args)
+    
 
+
+# Crear un contenedor para las líneas de código
+CodigoContenedor = tk.Frame(ventana)
+CodigoContenedor.pack(side=tk.LEFT, fill=tk.Y)
+
+# Crear un barra de navegacion
+texto_scroll = tk.Scrollbar(CodigoContenedor)
+texto_scroll.pack(side=tk.RIGHT,fill=tk.Y)
 
 # Crear un widget de texto para el código (editor)
-editor = scrolledtext.ScrolledText(ventana, width=80, height=25, wrap=tk.WORD)
-editor.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+editor = tk.Text(CodigoContenedor, width=92, height=25, wrap=tk.WORD,relief=tk.FLAT,yscrollcommand=texto_scroll.set)
+editor.pack(side=tk.RIGHT, fill=tk.Y)
 fuente = font.Font(family = "Inconsolata", size =11)
 #Agregar de fuente al texto (editor)
 editor.configure(font = fuente)
 
-# Crear un contenedor para las líneas de código
-lineasCodigoContenedor = tk.Frame(ventana)
-lineasCodigoContenedor.pack(side=tk.LEFT, fill=tk.Y)
 # Crear un widget de texto para las líneas de código
-lineasCodigoTexto = tk.Text(lineasCodigoContenedor, width=4, height=25, bg="lightgray", relief=tk.FLAT)
+lineasCodigoTexto = tk.Text(CodigoContenedor, width=4, height=25, bg="lightgray", relief=tk.FLAT,yscrollcommand=texto_scroll.set)
 lineasCodigoTexto.pack(side=tk.LEFT, fill=tk.Y)
+#Agregar de fuente al texto (lineasCodigoTexto)
 lineasCodigoTexto.configure(font= fuente)
 
+texto_scroll.config(command=movimientoSincronizadoScrollText)
 
 
 # Al presionar una tecla añade las lineas de codigo
 editor.bind("<KeyPress>", agregar_linea_codigo)
-editor.bind("<KeyPress-Up>",movimientoSincronizadoScrollText)
-editor.bind("<KeyPress-Down>",movimientoSincronizadoScrollText)
+
 
 # Crear una barra de menú principal
 menuBar = tk.Menu(ventana)
-
 # Crear barra de menú para archivo
 menu_archivo = tk.Menu(menuBar,tearoff=0)
 menu_archivo.add_command(label="Abrir", command=cargarArchivo)
