@@ -24,7 +24,7 @@ def cerrar_ventana():
 def compilar_codigo():
     codigo = editor.get("1.0", tk.END)
     
-    # Clear the existing text in the console widget
+    # Elimina elementos en la consola widget
     texto_consola.delete('1.0', tk.END)
     
     # Redirigir la salida estándar al widget de texto
@@ -99,8 +99,6 @@ def guardar_como():
         archivo.close()
         print("Archivo guardado correctamente.")
 
-
-# Funcion para agregar lineas de codigo
 # Función para agregar líneas de código
 def agregar_linea_codigo(event):
     contenido = editor.get("1.0", tk.END)
@@ -111,6 +109,7 @@ def agregar_linea_codigo(event):
     editor.yview_moveto(1.0)
     lineasCodigoTexto.yview_moveto(1.0)
 
+# Funcion para mover dos elementos al mismo tiempo (tk.Text) en el frame Codigo Contenedor
 def movimientoSincronizadoScrollText(*args):
     editor.yview(*args)
     lineasCodigoTexto.yview(*args)
@@ -137,7 +136,6 @@ lineasCodigoTexto = tk.Text(CodigoContenedor, width=4, height=25, bg="lightgray"
 lineasCodigoTexto.pack(side=tk.LEFT, fill=tk.Y)
 #Agregar de fuente al texto (lineasCodigoTexto)
 lineasCodigoTexto.configure(font= fuente)
-
 texto_scroll.config(command=movimientoSincronizadoScrollText)
 
 
