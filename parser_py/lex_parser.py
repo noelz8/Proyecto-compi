@@ -43,12 +43,12 @@ tokens = [
     'MASTER',
     'CALL',
     'NEW',
+    'ALTERB',
     'ALTER',
     'ADD',
     'SUB',
     'MUL',
     'DIV',
-    'ALTERB',
     'SIGNAL',
     'VIEWSIGNAL',
     'ISTRUE',
@@ -128,15 +128,17 @@ def t_NEW(t):
     t.type = 'NEW'
     return t
 
+def t_ALTERB(t):
+    r'AlterB'
+    t.type = 'ALTERB'
+    return t
+
 def t_ALTER(t):
     r'Alter'
     t.type = 'ALTER'
     return t
 
-def t_ALTERB(t):
-    r'AlterB'
-    t.type = 'ALTERB'
-    return t
+
 
 def t_SIGNAL(t):
     r'Signal'
@@ -248,7 +250,6 @@ def t_DATATYPE(t):
     t.type = datatype.get(t.value)
     return t
 
-
 # Regla para la variable
 def t_VARIABLE(t):
     r'@[?\w]{1,11}'
@@ -264,10 +265,6 @@ def t_VARIABLE(t):
     else:
         return t
     
-
-
-
-
 def t_COND_NUMERICA(t):
     r'>|<|==|<>|>=|<='
     t.type = cond_Numericas.get(t.value)
@@ -286,27 +283,28 @@ def t_error(t):
 
 # Crear el analizador léxico
 lexer = lex.lex()
-"""data = '''//Nombre y funcionalidad del código
-
+data = '''
+//Nombre y funcionalidad del código
 Proc @Master
 (
-  
+    // Comentario de prueba
     Values (@variable2, True);
-    While IsTrue(@variale2)
-        ( Signal(@variale2, 1);
+    While IsTrue(@variable2)
+        ( Signal(@variable2, 1);
         AlterB (@variable2);
 );
+Proc @Procesofoo (
     // Comentario de prueba
     Values (@variable1, 100);
     While @variable1 > 10
         ( Signal(@variale1, 1);
-        Values (@variable1,
-        Alter (@variable1,SUB, 10));
+        Values (@variable1, Alter (@variable1,SUB, 10));
  );
 );'''
+
 lexer.input(data)
 while True:
     token = lexer.token()
     if not token:
         break
-    print(token)"""
+    print(token)
