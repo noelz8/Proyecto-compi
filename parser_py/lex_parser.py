@@ -293,6 +293,7 @@ Proc @Master
         ( Signal(@variable2, 1);
         AlterB (@variable2);
 );
+);
 Proc @Procesofoo (
     // Comentario de prueba
     Values (@variable1, 100);
@@ -303,8 +304,8 @@ Proc @Procesofoo (
 );'''
 
 lexer.input(data)
-while True:
+"""while True:
     token = lexer.token()
     if not token:
         break
-    print(token)
+    print(token)"""

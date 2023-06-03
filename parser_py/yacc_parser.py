@@ -34,15 +34,10 @@ def p_proc(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar el proc
 
-"""def p_master(p):
-    '''
-    master : MASTER
-    '''
-    # Aquí puedes realizar las acciones necesarias para procesar el master
-"""
+
 def p_group_proc(p):
     '''
-    group_proc : PROC VARIABLE LPARENTESIS COMENTARIO statement RPARENTESIS PUNTO_COMA group_proc
+    group_proc : PROC VARIABLE LPARENTESIS COMENTARIO list_statement RPARENTESIS PUNTO_COMA group_proc
                | empty
     '''
     # Aquí puedes realizar las acciones necesarias para procesar el bloque de códig
@@ -87,6 +82,7 @@ def p_new_variable_statement(p):
 def p_values_statement(p):
     '''
     values_statement : VALUES LPARENTESIS VARIABLE COMA value RPARENTESIS PUNTO_COMA
+                    | VALUES LPARENTESIS VARIABLE COMA alter_statement RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Values
 
@@ -104,7 +100,7 @@ def p_alterb_statement(p):
 
 def p_condition_statement(p):
     '''
-    condition_statement : expression COND_NUMERICA expression
+    condition_statement : expression condition expression
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia condicional
 
@@ -133,12 +129,18 @@ def p_until_statement(p):
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Until
 def p_condition(p):
     '''
-    condition : expression COND_NUMERICA expression
+    condition :  MAYOR_QUE
+                | MENOR_QUE
+                | IGUAL
+                | DISTINTO_QUE
+                | MAYOR_IGUAL_QUE
+                | MENOR_IGUAL_QUE
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una condición
 def p_while_statement(p):
     '''
     while_statement : WHILE expression LPARENTESIS list_statement RPARENTESIS PUNTO_COMA
+                    | WHILE condition_statement LPARENTESIS list_statement RPARENTESIS PUNTO_COMA
                     | WHILE istrue LPARENTESIS list_statement RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia While
@@ -226,11 +228,7 @@ def p_empty(p):
 def p_error(p):
     print("Error de sintaxis en la entrada:", p)
 
-def p_values(p):
-    '''
-    values : VALUES
-    '''
-# Construcción del parser
+
 parser = yacc.yacc()
 
 
@@ -246,12 +244,13 @@ Proc @Master
         ( Signal(@variable2, 1);
         AlterB (@variable2);
 );
+);
 Proc @Procesofoo (
     // Comentario de prueba
     Values (@variable1, 100);
     While @variable1 > 10
         ( Signal(@variale1, 1);
-        Values (@variable1, Alter (@variable1,SUB, 10));
+        Values (@variable1, Alter (@variable1,SUB, 10););
  );
 );'''
 
