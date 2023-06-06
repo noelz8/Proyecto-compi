@@ -73,7 +73,7 @@ tokens = [
     'BOOL'
 ]
 datatype ={
-    'Num':'NUM',
+    'Num':'NUMERO',
     'Bool':'BOOL'
 }
 

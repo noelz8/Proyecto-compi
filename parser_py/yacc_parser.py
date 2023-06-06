@@ -240,7 +240,7 @@ def p_viewsignal_statement(p):
 
 def p_expression(p):
     '''
-    expression : NUM
+    expression : NUMERO
                | VARIABLE
                | LPARENTESIS expression RPARENTESIS
                | expression '+' expression
