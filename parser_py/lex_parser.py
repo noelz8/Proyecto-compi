@@ -10,6 +10,7 @@ tokens = [
     'TILDE',
     'ENYE',
     'COMENTARIO',
+   
     # Símbolos especiales
     'SUMA',
     'RESTA',
@@ -270,7 +271,10 @@ def t_COND_NUMERICA(t):
     t.type = cond_Numericas.get(t.value)
     return t
 
-
+def t_STRING(t):
+    r'"[^"\n]*"'
+    t.value = t.value[1:-1]  # Eliminar las comillas alrededor del string
+    return t
 # Regla para manejar saltos de línea
 def t_newline(t):
     r'\n+'
@@ -295,17 +299,18 @@ Proc @Master
 );
 );
 Proc @Procesofoo (
-    // Comentario de prueba
+    // Comentario de prueba 
     Values (@variable1, 100);
     While @variable1 > 10
-        ( Signal(@variale1, 1);
-        Values (@variable1, Alter (@variable1,SUB, 10));
+        (PrintValues( " valor de prueba " )
+        Signal(@variale1, 1);
+        Values (@variable1, Alter (@variable1,SUB, 10););
  );
 );'''
 
 lexer.input(data)
-"""while True:
+while True:
     token = lexer.token()
     if not token:
         break
-    print(token)"""
+    print(token)
