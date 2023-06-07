@@ -57,7 +57,7 @@ contenedor = tk.Frame(ventana)
 contenedor.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
 # Crear un widget para que muestre resultados de la compilación
-texto_consola = scrolledtext.ScrolledText(contenedor, width=80, height=10, wrap=tk.WORD)
+texto_consola = scrolledtext.ScrolledText(contenedor, width=80, height=10, wrap=tk.WORD,relief=tk.FLAT)
 texto_consola.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 # Fuente de la terminal y colores de la terminal
 fuenteTerminal = font.Font(family = "Inconsolata", size =10,weight="bold")
