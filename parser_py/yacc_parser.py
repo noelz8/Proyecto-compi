@@ -1,6 +1,9 @@
 import ply.yacc as yacc
 from lex_parser import tokens
 
+#Tabla de Simbolos
+table_symbols = {} #Se crea un diccionario para las variables que vamos a almacenar
+
 # Regla inicial
 def p_program(p):
     '''
