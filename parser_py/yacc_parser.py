@@ -96,7 +96,7 @@ def p_return_bool_statement(p):
 
 def p_new_variable_statement(p):
     '''
-    new_variable_statement : NEW VARIABLE COMA LPARENTESIS DATATYPE COMA value RPARENTESIS PUNTO_COMA
+    new_variable_statement : NEW VARIABLE COMA LPARENTESIS datatype COMA value RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia New
 
@@ -268,6 +268,12 @@ def p_value(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar un valor
 
+def p_datatype(p):
+    '''
+    datatype : NUMERO 
+             | BOOL
+    '''
+    p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
 def p_empty(p):
     '''
     empty :
