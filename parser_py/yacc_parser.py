@@ -4,9 +4,10 @@ from lex_parser import tokens
 #Tabla de Simbolos
 table_symbols = {} #Se crea un diccionario para las variables que vamos a almacenar
 
+#Tabla de expresiones
+table_expressions = {}
 
 # Definicion de errores
-
 list_errors = []
 
 
@@ -37,18 +38,46 @@ def p_code_block(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar el bloque de código
 
+    #En caso de que sea el siguiente:
+
+    # proc MASTER LPARENTESIS comentario list_statement RPARENTESIS PUNTO_COMA group_proc
+    if len(p) == 9:
+        proc_name = p[1] # Conseguir el nombre del procedimiento
+        comments = p[4] # Conseguir los comentarios del procedimiento
+        statements = p[5] # Conseguir la lista de declaraciones de los procedimientos
+        group_proc = p[8] # Conseguir el grupo de procedimientos
+    
+    # group_proc proc MASTER LPARENTESIS comentario list_statement RPARENTESIS PUNTO_COMA group_proc
+    elif len(p) == 10:
+        group_proc1 = p[1] # Conseguir el primer grupo de procedimientos
+        proc_name = p[2] # Conseguir el nombre del procedimiento
+        comments = p[5] # Conseguir los comentarios del procedimiento
+        statements = p[6] # Conseguir la lista de declaraciones de los procedimientos
+        group_proc2 = p[9] # Conseguir el segundo grupo de procedimientos
+    
 def p_proc(p):
     '''
     proc : PROC
     '''
     # Aquí puedes realizar las acciones necesarias para procesar el proc
 
+    p[0] = p[1] #Asigna a p[0] el nombre del procedimiento
+
+
 def p_group_proc(p):
     '''
     group_proc : PROC VARIABLE LPARENTESIS COMENTARIO list_statement RPARENTESIS PUNTO_COMA group_proc
                | empty
     '''
-    # Aquí puedes realizar las acciones necesarias para procesar el bloque de códig
+    # Aquí puedes realizar las acciones necesarias para procesar el bloque de código
+
+    if len(p) ==2:
+        pass # En caso de que venga un grupo de procedimiento vacio
+    else:
+        variable = p[2] #obtiene el nombre de las variables en el procedimiento
+        comment = p[4] # obtiene los comentarios del procedimiento
+        statements = p[5] # obtiene la lista de declaraciones
+        group_proc = p[8] # obtiene el siguiente grupo de procedimientos
 
 def p_list_statement(p):
     '''
@@ -58,12 +87,22 @@ def p_list_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una lista de sentencias
 
+    if len(p) == 2:
+        if isinstance(p[1],str):
+            pass
+        else:
+            pass
+    else:
+        p[0] = [p[1],p[2]]
+
 def p_statement(p):
     '''
     statement : no_return_statement
               | return_statement
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia
+
+    p[0] = p[1]
 
 def p_no_return_statement(p):
     '''
@@ -79,6 +118,8 @@ def p_no_return_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia que no retorna valor
 
+    p[0] = p[1]
+
 def p_return_statement(p):
     '''
     return_statement : return_num_statement
@@ -86,12 +127,15 @@ def p_return_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia que retorna valor
 
+    p[0] = p[1]
 def p_return_num_statement(p):
     '''
     return_num_statement : viewsignal_statement
                         | alter_statement
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia que retorna un valor numérico
+
+    p[0] = p[1]
 
 def p_return_bool_statement(p):
     '''
@@ -100,6 +144,8 @@ def p_return_bool_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia que retorna un valor booleano
 
+    p[0] = p[1]
+    
 def p_new_variable_statement(p):
     '''
     new_variable_statement : NEW VARIABLE COMA LPARENTESIS datatype COMA value RPARENTESIS PUNTO_COMA
