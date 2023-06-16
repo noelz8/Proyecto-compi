@@ -398,6 +398,17 @@ def p_while_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia While
 
+    condicion = p[2]
+    listado_instrucciones = p[4]
+    if condicion == True:
+        for instruccion in listado_instrucciones:
+            condicion = p[2]
+            if not condicion:
+                break
+        
+
+
+
 def p_bool(p):
     '''
     bool : TRUE
@@ -600,7 +611,10 @@ Proc @Master
     @variable3 > 4
 
     While IsTrue(@variable4)
-    (Values (@variable3, 100););
+    (Values (@variable3, 100);
+    AlterB(@variable4);
+    Values (@variable3, 150);
+    );
 
         
     
