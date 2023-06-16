@@ -53,8 +53,7 @@ SerialFirmata serialFeature;
 #endif
 
 LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
-
-boolean displayNumbers = false;
+boolean displayNumbers = false; // Variable para saber si se muestra un numero o no
 
 // Caracteres especiales para la lcd
 byte nE_LCD[] = {
@@ -918,6 +917,17 @@ void setup()
   lcd.print("Maquina braille");
   lcd.setCursor(0,1);
   lcd.print("Iniciando...");
+
+  // Test de los servos
+  for (int i = 0; i < 6; i++) {
+    servos[i].write(0);
+    delay(100);
+    servos[i].write(180);
+    delay(100);
+    servos[i].write(0);
+    delay(100);
+    servos[i].detach();
+  }
   
   Firmata.setFirmwareVersion(FIRMATA_FIRMWARE_MAJOR_VERSION, FIRMATA_FIRMWARE_MINOR_VERSION);
 

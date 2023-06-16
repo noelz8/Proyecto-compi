@@ -1,13 +1,21 @@
 from pyfirmata import Arduino, SERVO
 from time import sleep
 
-port = 'COM9'
+port = 'COM9' # Cambiar por el puerto en el que se conecte el Arduino
 board = Arduino(port)
 pin = [3, 5, 6, 9, 10, 11]
+servosState = [0, 0, 0, 0, 0, 0]
 
-def rotateServo(pin, angle):
-    board.digital[pin].write(angle)
+def rotateServo(servo, angle):
+    board.digital[pin[servo]].write(angle)
+    if angle == 0:
+        servosState[servo] = 0
+    else:
+        servosState[servo] = 1
     sleep(0.015)
+
+def stateServo(servo):
+    return servosState[pin[servo]]
 
 # Setup
 for i in pin:
@@ -15,102 +23,12 @@ for i in pin:
 
 # Loop
 while True:
-    # # a
-    # rotateServo(pin[0], 40)
-    # sleep(1)
-    # # b
-    # rotateServo(pin[1], 40)
-    # sleep(1)
-    # # c
-    # rotateServo(pin[1], 0)
-    # rotateServo(pin[3], 40)
-    # sleep(1)
-    # # d
-    # rotateServo(pin[4], 40)
-    # sleep(1)
-    # # e
-    # rotateServo(pin[3], 0)
-    # sleep(1)
-    # # f
-    # rotateServo(pin[1], 40)
-    # rotateServo(pin[3], 40)
-    # rotateServo(pin[4], 0)
-    # sleep(1)
-    # # g
-    # rotateServo(pin[4], 40)
-    # sleep(1)
-    # # h
-    # rotateServo(pin[3], 0)
-    # sleep(1)
-    # # i
-    # rotateServo(pin[0], 0)
-    # rotateServo(pin[3], 40)
-    # rotateServo(pin[4], 0)
-    # sleep(1)
-    # # j
-    # rotateServo(pin[4], 40)
-    # sleep(1)
-    # # k
-    # rotateServo(pin[0], 40)
-    # rotateServo(pin[1], 0)
-    # rotateServo(pin[2], 40)
-    # rotateServo(pin[3], 0)
-    # rotateServo(pin[4], 0)
-    # sleep(1)
-    # # l
-    # rotateServo(pin[1], 40)
-    # sleep(1)
-    # # m
-    # rotateServo(pin[1], 0)
-    # rotateServo(pin[3], 40)
-    # sleep(1)
-    # # n
-    # rotateServo(pin[4], 40)
-    # sleep(1)
-    # # ñ
-    # rotateServo(pin[1], 40)
-    # rotateServo(pin[2], 0)
-    # rotateServo(pin[5], 40)
-    # sleep(1)
-    # # o
-    # rotateServo(pin[1], 0)
-    # rotateServo(pin[2], 40)
-    # rotateServo(pin[3], 0)
-    # rotateServo(pin[5], 0)
-    # sleep(1)
-    # # p
-    # rotateServo(pin[1], 40)
-    # rotateServo(pin[3], 40)
-    # rotateServo(pin[4], 0)
-    # sleep(1)
-    # # q
-    # rotateServo(pin[4], 40)
-    # sleep(1)
-    # # r
-    # rotateServo(pin[3], 0)
-    # sleep(1)
-    # # s
-    # rotateServo(pin[0], 0)
-    # rotateServo(pin[4], 0)
-    # rotateServo(pin[3], 40)
-
-    # sleep(1)
-    # rotateServo(pin[0], 0)
-    # rotateServo(pin[1], 0)
-    # rotateServo(pin[2], 0)
-    # rotateServo(pin[3], 0)
-    # rotateServo(pin[4], 0)
-    # rotateServo(pin[5], 0)
-    # sleep(1)
-
-    for i in pin:
+    for i in range(len(pin)):
         rotateServo(i, 40)
     sleep(1)
-    for i in pin:
+    for i in range(len(pin)):
         rotateServo(i, 0)
     sleep(1)
+    # board.exit()
 
-    # rotateServo(pin[5], 50)
-    # sleep(1)
-    # rotateServo(pin[5], 0)
-    # sleep(1)
+
