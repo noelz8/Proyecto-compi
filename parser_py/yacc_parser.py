@@ -347,6 +347,19 @@ def p_istrue_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia IsTrue
 
+    variable = p[3]
+    if variable in table_symbols:
+        valor_bool = table_symbols[variable]
+        if valor_bool:
+            p[0] = False
+        else:
+            p[0] = True
+        print(f"El valor de la variable es: {p[0]}")
+    else:
+        print(f"La variable {variable} no está definida")
+        p[0] = False
+        
+
 def p_repeat_statement(p):
     '''
     repeat_statement : REPEAT LPARENTESIS list_statement break_statement RPARENTESIS PUNTO_COMA
@@ -519,7 +532,17 @@ def p_istrue(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una expresión booleana
 
-    p[0] = p[3]
+    variable = p[3]
+    if variable in table_symbols:
+        valor_bool = table_symbols[variable]
+        if valor_bool:
+            p[0] = False
+        else:
+            p[0] = True
+        print(f"El valor de la variable es: {p[0]}")
+    else:
+        print(f"La variable {variable} no está definida")
+        p[0] = False
 
 def p_value(p):
     '''
@@ -575,6 +598,11 @@ Proc @Master
     3 > 4
 
     @variable3 > 4
+
+    While IsTrue(@variable4)
+    (Values (@variable3, 100););
+
+        
     
     
 );'''
