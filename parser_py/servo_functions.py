@@ -7,11 +7,8 @@ pin = [3, 5, 6, 9, 10, 11]
 servosState = [0, 0, 0, 0, 0, 0]
 
 def rotateServo(servo, angle):
-    board.digital[pin[servo]].write(angle)
-    if angle == 0:
-        servosState[servo] = 0
-    else:
-        servosState[servo] = 1
+    board.digital[pin[servo]].write(angle*40)
+    servosState[servo] = angle*40
     sleep(0.015)
 
 def stateServo(servo):
