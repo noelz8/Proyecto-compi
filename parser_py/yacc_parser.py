@@ -277,6 +277,18 @@ def p_alterb_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia AlterB
 
+    reservada = p[1]
+    variable = p[3]
+
+    if variable in table_symbols:
+        if type(table_symbols[variable]) == bool:
+            table_symbols[variable] = not table_symbols[variable]
+            print(f"Se logró cambiar el valor {table_symbols[variable]}")
+        else:
+            print(f"La variable {variable} no es tipo booleano")
+    else:
+        print(f"Declare la variable {variable} para poder realizar alterb")
+
 def p_condition_statement(p):
     '''
     condition_statement : expression condition expression
@@ -404,8 +416,6 @@ def p_expression(p):
                | VARIABLE
                | LPARENTESIS expression RPARENTESIS
                | NUMERO operador NUMERO
-               | alter_statement
-
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una expresión matemática
     if len(p) == 2:
@@ -476,11 +486,13 @@ Proc @Master
     // Comentario de prueba
     New @variable3,(Num, 5);
 
-    New @variable4,(Bool, True);
+    New @variable4,(Bool, False);
     
     Values (@variable3, 90);
 
     Values (@variable3, Alter(@variable3, MUL, 5););
+
+    AlterB(@variable4);
 );'''
 
 parser.parse(data)
