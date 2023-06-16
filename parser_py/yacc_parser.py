@@ -389,7 +389,8 @@ Proc @Master
     // Comentario de prueba
     New @variable1,(Bool, True);
     New @variable3,(Num, 5);
-    Values (@variable1, False);
+
+    Values (@variable1, True);
 
     Values (@variable2, True);
     While IsTrue(@variable2)

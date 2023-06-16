@@ -292,6 +292,10 @@ data = '''
 Proc @Master
 (
     // Comentario de prueba
+    New @variable1,(Bool, True);
+    New @variable3,(Num, 5);
+    Values (@variable1, False);
+
     Values (@variable2, True);
     While IsTrue(@variable2)
         ( Signal(@variable2, 1);
@@ -302,7 +306,7 @@ Proc @Procesofoo (
     // Comentario de prueba 
     Values (@variable1, 100);
     While @variable1 > 10
-        (PrintValues( " valor de prueba " )
+        (PrintValues("valor de prueba");
         Signal(@variale1, 1);
         Values (@variable1, Alter (@variable1,SUB, 10););
  );
