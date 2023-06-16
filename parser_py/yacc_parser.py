@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from lex_parser import tokens
-#from servo_move import rotateServo
+import servo_functions as servo
 
 #Tabla de Simbolos
 table_symbols = {} #Se crea un diccionario para las variables que vamos a almacenar
@@ -513,27 +513,17 @@ def p_signal_statement(p):
     variable = p[3]
     valor = p[5]
 
-    # if variable in table_symbols:
-    #     if type(table_symbols[variable]) == int:
-    #         if table_symbols[variable] == 3 and (valor == 1 or valor == 0):
-    #             rotateServo(table_symbols[variable],valor)
-    #         elif table_symbols[variable] == 5 (valor == 1 or valor == 0):
-    #             rotateServo(table_symbols[variable],valor)
-    #         elif table_symbols[variable] == 6 (valor == 1 or valor == 0):
-    #             rotateServo(table_symbols[variable],valor)
-    #         elif table_symbols[variable] == 9 (valor == 1 or valor == 0):
-    #             rotateServo(table_symbols[variable],valor)
-    #         elif table_symbols[variable] == 10 (valor == 1 or valor == 0):
-    #             rotateServo(table_symbols[variable],valor)
-    #         elif table_symbols[variable] == 11 (valor == 1 or valor == 0):
-    #             rotateServo(table_symbols[variable],valor)
-    #         else:
-    #             print(f"Es posible que el estado {valor} [0 - 1] o la posicion {table_symbols[variable]} este incorrectos")
-    #         print(f"Cambio de la posición {table_symbols[variable]} con el estado {valor}")
-    #     else:
-    #         print(f"La variable {variable} no es de tipo númerico")
-    # else:
-    #     print(f"Declara la variable {variable} para ser usada en signal")
+    if variable in table_symbols:
+        if type(table_symbols[variable]) == int:
+            if (table_symbols[variable] >= 0 and table_symbols[variable] <= 5) and (valor == 1 or valor == 0):
+                servo.rotateServo(table_symbols[variable],valor)
+            else:
+                print(f"Es posible que el estado {valor} [0 - 1] o la posicion {table_symbols[variable]} este incorrectos. Recuerda que la posicion debe ser entre 0 y 5")
+            print(f"Cambio de la posición {table_symbols[variable]} con el estado {valor}")
+        else:
+            print(f"La variable {variable} no es de tipo numérico")
+    else:
+        print(f"Declara la variable {variable} para ser usada en Signal")
 
 
 def p_viewsignal_statement(p):
@@ -544,6 +534,18 @@ def p_viewsignal_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia ViewSignal
     reservada = p[1]
+    variable = p[3]
+
+    if variable in table_symbols:
+        if type(table_symbols[variable]) == int:
+            if (table_symbols[variable] >= 0 and table_symbols[variable] <= 5):
+                servo.stateServo(table_symbols[variable])
+            else:
+                print(f"Es posible que la posicion {table_symbols[variable]} este incorrecta. Recuerda que la posicion debe ser entre 0 y 5")
+        else:
+            print(f"La variable {variable} no es de tipo numérico")
+    else:
+        print(f"Declara la variable {variable} para ser usada en ViewSignal")
 
 
 
