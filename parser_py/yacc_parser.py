@@ -4,6 +4,15 @@ from lex_parser import tokens
 #Tabla de Simbolos
 table_symbols = {} #Se crea un diccionario para las variables que vamos a almacenar
 
+if len(table_symbols) > 0:
+    # Hay datos en table_symbols
+    # Puedes realizar las acciones correspondientes
+    print("Se ha almacenado datos")
+else:
+    # table_symbols está vacío
+    # Puedes mostrar un mensaje o realizar otras acciones
+    print("No se ha almacenado datos")
+
 #Tabla de expresiones
 table_expressions = {}
 
@@ -145,12 +154,34 @@ def p_return_bool_statement(p):
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia que retorna un valor booleano
 
     p[0] = p[1]
-    
+
 def p_new_variable_statement(p):
     '''
     new_variable_statement : NEW VARIABLE COMA LPARENTESIS datatype COMA value RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia New
+
+    variable = p[2]
+    tipoDato = p[5]
+    variable_value = p[7]
+
+    if tipoDato == 'Bool' and type(variable_value) == bool: #Verifica que el tipo de dato sea igual al valor que se agrega
+        if variable not in table_symbols:
+            table_symbols[variable] = variable_value #Asigna el valor a la variable en el diccionario table_symbols
+            p[0] = [p[1],variable,variable_value]
+        else:
+            print(f"Error de sintaxis: la variable {variable} ha sido ya declarada")
+
+    elif tipoDato == 'Num' and type(variable_value) == int: #Verifica que el tipo de dato sea igual al valor que se agrega
+        if variable not in table_symbols:
+            table_symbols[variable] = variable_value #Asigna el valor a la variable en el diccionario table_symbols
+            p[0] = [p[1],variable,variable_value]
+        else:
+            print(f"Error de sintaxis: la variable {variable} ha sido ya declarada")
+    else:
+        list_errors.append(f"Error de sintaxis: el tipo de dato {tipoDato} no coincide con el valor {variable_value}")
+        print(f"Error de sintaxis: el tipo de dato {tipoDato} no coincide con el valor {variable_value}")
+        
 
 def p_values_statement(p):
     '''
@@ -172,6 +203,7 @@ def p_operador(p):
             | MUL
             | DIV
     '''
+    p[0] = p[1] # Se le asigna 
 
 def p_alterb_statement(p):
     '''
@@ -220,6 +252,8 @@ def p_condition(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una condición
 
+    p[0] = p[1]
+
 def p_while_statement(p):
     '''
     while_statement : WHILE condition_statement LPARENTESIS list_statement RPARENTESIS PUNTO_COMA
@@ -233,6 +267,7 @@ def p_bool(p):
          | FALSE
     '''
     # Aquí puedes realizar las acciones necesarias para procesar un valor booleano
+    p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
 
 def p_case_statement(p):
     '''
@@ -258,6 +293,8 @@ def p_else_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar la cláusula Else en una sentencia Case
 
+    p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
+
 def p_printvalues_statement(p):
     '''
     printvalues_statement : PRINTVALUES LPARENTESIS list_content_print RPARENTESIS PUNTO_COMA
@@ -277,6 +314,7 @@ def p_content_print(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar el contenido de una sentencia PrintValues
 
+    p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
 def p_signal_statement(p):
     '''
     signal_statement : SIGNAL LPARENTESIS VARIABLE COMA return_num_statement RPARENTESIS PUNTO_COMA
@@ -305,6 +343,8 @@ def p_expression(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una expresión matemática
 
+    p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
+
 def p_istrue(p):
     '''
     istrue : ISTRUE LPARENTESIS VARIABLE RPARENTESIS
@@ -320,12 +360,15 @@ def p_value(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar un valor
 
+    p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
+
 def p_datatype(p):
     '''
     datatype : NUMERO 
              | BOOL
     '''
     p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
+
 def p_empty(p):
     '''
     empty :
@@ -344,6 +387,10 @@ data = '''
 Proc @Master
 (
     // Comentario de prueba
+    New @variable1,(Bool, True);
+    New @variable3,(Num, 5);
+    Values (@variable1, False);
+
     Values (@variable2, True);
     While IsTrue(@variable2)
         ( Signal(@variable2, 1);
