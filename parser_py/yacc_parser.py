@@ -400,11 +400,15 @@ def p_while_statement(p):
 
     condicion = p[2]
     listado_instrucciones = p[4]
-    if condicion == True:
-        for instruccion in listado_instrucciones:
-            condicion = p[2]
-            if not condicion:
-                break
+    if condicion == True: # Si la condición se cumple entonces entrará en en el while
+        while condicion:
+            for instruccion in listado_instrucciones: # Hace un recorrido por cada una de los statements
+                condicion = p[2] # Actualiza el dato dentro de la ejecución del while
+                if not condicion:
+                    break #Detener el while
+    else:
+        print(f"La condición es {condicion}")
+        return # Salir de la funcion
         
 
 
@@ -598,13 +602,13 @@ Proc @Master
     // Comentario de prueba
     New @variable3,(Num, 5);
 
-    New @variable4,(Bool, False);
+    New @variable4,(Bool, True);
     
     Values (@variable3, 90);
 
     Values (@variable3, Alter(@variable3, MUL, 5););
 
-    AlterB(@variable4);
+    
 
     3 > 4
 
@@ -612,8 +616,12 @@ Proc @Master
 
     While IsTrue(@variable4)
     (Values (@variable3, 100);
-    AlterB(@variable4);
+    
     Values (@variable3, 150);
+
+    Values(@variable3, Alter(@variable3, MUL, 5););
+    AlterB(@variable4);
+
     );
 
         
