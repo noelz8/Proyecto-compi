@@ -169,6 +169,14 @@ def p_new_variable_statement(p):
         if variable not in table_symbols:
             table_symbols[variable] = variable_value #Asigna el valor a la variable en el diccionario table_symbols
             p[0] = [p[1],variable,variable_value]
+            if len(table_symbols) > 0:
+                # Hay datos en table_symbols
+                # Puedes realizar las acciones correspondientes
+                print(f"Se ha almacenado datos {variable}")
+            else:
+                # table_symbols está vacío
+                # Puedes mostrar un mensaje o realizar otras acciones
+                print("No se ha almacenado datos")
         else:
             print(f"Error de sintaxis: la variable {variable} ha sido ya declarada")
 
@@ -176,6 +184,14 @@ def p_new_variable_statement(p):
         if variable not in table_symbols:
             table_symbols[variable] = variable_value #Asigna el valor a la variable en el diccionario table_symbols
             p[0] = [p[1],variable,variable_value]
+            if len(table_symbols) > 0:
+                # Hay datos en table_symbols
+                # Puedes realizar las acciones correspondientes
+                print(f"Se ha almacenado datos {variable}")
+            else:
+                # table_symbols está vacío
+                # Puedes mostrar un mensaje o realizar otras acciones
+                print("No se ha almacenado datos")
         else:
             print(f"Error de sintaxis: la variable {variable} ha sido ya declarada")
     else:
@@ -357,6 +373,7 @@ def p_value(p):
           | bool
           | return_num_statement
           | return_bool_statement
+          | BOOLEAN
     '''
     # Aquí puedes realizar las acciones necesarias para procesar un valor
 
@@ -377,8 +394,11 @@ def p_empty(p):
 
 # Manejo de errores de sintaxis
 def p_error(p):
-    print("Error de sintaxis en la entrada:", p)
-
+    if p:
+        print("Error de sintaxis en la entrada:", p)
+        print("Error en la linea: ", p.lineno)
+    else:
+        print("Error de sintaxis: entrada inesperada")
 parser = yacc.yacc()
 
 # Prueba del parser
@@ -387,11 +407,15 @@ data = '''
 Proc @Master
 (
     // Comentario de prueba
-    New @variable1,(Bool, True);
+
+
     New @variable3,(Num, 5);
 
-    Values (@variable1, True);
+    New @variable4,(Bool, True);
 
+    
+
+    Values (@variable1, True);
     Values (@variable2, True);
     While IsTrue(@variable2)
         ( Signal(@variable2, 1);

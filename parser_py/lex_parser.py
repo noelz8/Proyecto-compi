@@ -70,7 +70,8 @@ tokens = [
     'STRING',
     'COND_NUMERICA',
     'DATATYPE',
-    'BOOL'
+    'BOOL',
+    'BOOLEAN'
 ]
 datatype ={
     'Num':'NUMERO',
@@ -80,7 +81,7 @@ datatype ={
 # Definición de tokens
 t_TILDE = r'[áéíóúÁÉÍÓÚ]'
 t_LETRA = r'[a-zA-ZáéíóúÁÉÍÓÚüÜ]'
-t_NUMERO = r'\d+'
+#t_NUMERO = r'\d+'
 t_ENYE = r'ñ'
 t_SUMA = r'\+'
 t_RESTA = r'-'
@@ -139,7 +140,18 @@ def t_ALTER(t):
     t.type = 'ALTER'
     return t
 
-
+def t_NUMERO(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
+  
+def t_BOOLEAN(t):
+    r'(True|False)'
+    if t.value == 'True':
+        t.value = True
+    elif t.value == 'False':
+        t.value = False
+    return t
 
 def t_SIGNAL(t):
     r'Signal'
