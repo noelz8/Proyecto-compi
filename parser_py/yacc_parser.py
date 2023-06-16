@@ -146,6 +146,13 @@ def p_return_num_statement(p):
 
     p[0] = p[1]
 
+def p_num_alter_statement(p):
+    '''
+    num_alter_statement : NUMERO
+    '''
+
+    p[0] = p[1]
+
 def p_return_bool_statement(p):
     '''
     return_bool_statement : condition_statement
@@ -223,32 +230,49 @@ def p_values_statement(p):
             print(f"Los valores no corresponden al tipo de dato {variable_value}")
     else:
         print(f"La variable {variable} no existe debe de inicializar la variable")
+    
 
 def p_alter_statement(p):
     '''
-    alter_statement : ALTER LPARENTESIS VARIABLE COMA operador COMA return_num_statement RPARENTESIS PUNTO_COMA
+    alter_statement : ALTER LPARENTESIS VARIABLE COMA operador COMA num_alter_statement RPARENTESIS PUNTO_COMA
                     | ALTER LPARENTESIS VARIABLE COMA operador COMA expression RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Alter
 
+    # reservada = p[1]
+    # variable = p[3]
+    # operacion = p[5]
+    # cambio_valor = [7][0]
+
+    # if variable in table_symbols:
+    #     if type(table_symbols[variable]) == int:
+    #         p[0] = [reservada,table_symbols[variable],operacion,cambio_valor]
+    #     else:
+    #         print(f"La variable {variable} no es de tipo numerico")
+    # else:
+    #     print(f"Debe de inicializar la variable {variable} para realizar Alter")
     reservada = p[1]
     variable = p[3]
     operacion = p[5]
-    retorna_valor = [7]
+    cambio_valor = p[7]  # Obtener el valor correspondiente a la operación
 
     if variable in table_symbols:
-        if type(table_symbols[variable]) == int and type(retorna_valor) == int:
-            p[0] = [reservada,variable,operacion,retorna_valor]
-        elif type(table_symbols[variable]) == bool and type(retorna_valor) == int:
-            print(f"El valor de la variable {variable} no coincide con el tipo de dato de {retorna_valor}")
-        elif type(table_symbols[variable]) == int and type(retorna_valor) == bool:
-            print(f"El tipo de dato a retorna no es un numero entero, es {retorna_valor} se le sugiere usar valores numerico enteros")
+        if type(table_symbols[variable]) == int:
+            if operacion == 'ADD':
+                table_symbols[variable] += cambio_valor
+            elif operacion == 'SUB':
+                table_symbols[variable] -= cambio_valor
+            elif operacion == 'MUL':
+                table_symbols[variable] *= cambio_valor
+            elif operacion == 'DIV':
+                table_symbols[variable] /= cambio_valor
+            print(f"Se realizó la operación correctamente")
+        else:
+            print(f"La variable {variable} no es de tipo numérico")
     else:
-        print(f"La variable {variable} no existe debe de inicializar la variable")
+        print(f"Debe inicializar la variable {variable} para realizar Alter")
 
-
-
-
+    p[0] = table_symbols[variable]
 
 def p_operador(p):
     '''
@@ -384,20 +408,37 @@ def p_viewsignal_statement(p):
                         | VIEWSIGNAL LPARENTESIS alter_statement RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia ViewSignal
+    p[0] = p[3]
 
 def p_expression(p):
     '''
     expression : NUMERO
                | VARIABLE
                | LPARENTESIS expression RPARENTESIS
-               | expression '+' expression
-               | expression '-' expression
-               | expression '*' expression
-               | expression '/' expression
+               | NUMERO operador NUMERO
+               | alter_statement
+
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una expresión matemática
+    if len(p) == 2:
+        p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición, se trata como un numero o variable, alter_statement
+    
+    elif len(p) == 4:
+        if p[2] == 'ADD':
+            resultado = p[1] + p[3]
+            p[0] = resultado
+        elif p[2] == 'SUB':
+            resultado = p[1] - p[3]
+            p[0] = resultado
+        elif p[2] == 'MUL':
+            resultado = p[1] * p[3]
+            p[0] = resultado
+        elif p[2] == 'DIV':
+            resultado = p[1] / p[3]
+            p[0] = resultado
+    else:
+        print(f"Realize una operacion valida {p[2]}")
 
-    p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
 
 def p_istrue(p):
     '''
