@@ -222,7 +222,7 @@ def p_values_statement(p):
         else:
             print(f"Los valores no corresponden al tipo de dato {variable_value}")
     else:
-        print(f" La variable {variable} no existe debe de inicializar la variable")
+        print(f"La variable {variable} no existe debe de inicializar la variable")
 
 def p_alter_statement(p):
     '''
@@ -230,6 +230,25 @@ def p_alter_statement(p):
                     | ALTER LPARENTESIS VARIABLE COMA operador COMA expression RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Alter
+
+    reservada = p[1]
+    variable = p[3]
+    operacion = p[5]
+    retorna_valor = [7]
+
+    if variable in table_symbols:
+        if type(table_symbols[variable]) == int and type(retorna_valor) == int:
+            p[0] = [reservada,variable,operacion,retorna_valor]
+        elif type(table_symbols[variable]) == bool and type(retorna_valor) == int:
+            print(f"El valor de la variable {variable} no coincide con el tipo de dato de {retorna_valor}")
+        elif type(table_symbols[variable]) == int and type(retorna_valor) == bool:
+            print(f"El tipo de dato a retorna no es un numero entero, es {retorna_valor} se le sugiere usar valores numerico enteros")
+    else:
+        print(f"La variable {variable} no existe debe de inicializar la variable")
+
+
+
+
 
 def p_operador(p):
     '''
@@ -426,28 +445,13 @@ data = '''
 Proc @Master
 (
     // Comentario de prueba
-
-
     New @variable3,(Num, 5);
 
     New @variable4,(Bool, True);
     
     Values (@variable3, 90);
 
-    Values (@variable2, True);
-    While IsTrue(@variable2)
-        ( Signal(@variable2, 1);
-        AlterB (@variable2);
-);
-);
-Proc @Procesofoo (
-    // Comentario de prueba 
-    Values (@variable1, 100);
-    While @variable1 > 10
-        (PrintValues("valor de prueba");
-        Signal(@variale1, 1);
-        Values (@variable1, Alter (@variable1,SUB, 10););
- );
+    Values (@variable3, Alter(@variable3, SUB, 3););
 );'''
 
 parser.parse(data)
