@@ -73,7 +73,7 @@ charIgual = [0, 1, 1, 0, 1, 1]
 
 def rotateServo(pin, angle):
     board.digital[pin].write(angle)
-    #sleep(0.015)
+    sleep(0.015)
 
 def showChar(char):
     for i in range(6):
