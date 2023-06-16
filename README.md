@@ -7,8 +7,8 @@
 - [x] 2021084824 - Daniel Cob Beirute
 
 ## Descripción
-Proyecto Final *BrailleRead*, 2023
-CE3101 - Lenguajes, Compiladores e Interpretes
+- Proyecto Final *BrailleRead*, 2023
+- CE3101 - Lenguajes, Compiladores e Interpretes
 
 
 ## Requerimientos
@@ -27,9 +27,6 @@ python main.py
 
 ## Referencias
 - [x] [PLY](https://www.dabeaz.com/ply/ply.html)
-
-## Licencia
-[MIT](https://choosealicense.com/licenses/mit/)
 
 ## Estado
 - [x] En desarrollo
