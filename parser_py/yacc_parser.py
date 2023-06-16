@@ -485,12 +485,22 @@ def p_printvalues_statement(p):
     printvalues_statement : PRINTVALUES LPARENTESIS list_content_print RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia PrintValues
+
+    content = p[3]
+    for comentario in content:
+        print(comentario)
 def p_list_content_print(p):
     '''
     list_content_print : content_print COMA list_content_print
                        | content_print
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una lista de contenido de una sentencia PrintValues
+    contenido = p[1]
+    if len(p) > 2:
+        lista_contenido = p[3]
+        p[0] = [contenido] + lista_contenido
+    else:
+        p[0] = [contenido]
 def p_content_print(p):
     '''
     content_print : STRING
@@ -668,6 +678,8 @@ Proc @Master
     Until(
     Values(@variable3,Alter(@variable3, SUB, 50););
     )@variable3 < 50;
+
+    PrintValues("Esto es un comentario " , @variable3);
 
         
     
