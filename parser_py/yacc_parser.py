@@ -661,7 +661,8 @@ Proc @Master
     );
 
     Repeat(
-        Values (@variable3, 150);
+        Values (@variable3, 1);
+        Signal(@variable3,1);
         break;
     );
 
