@@ -169,6 +169,7 @@ def p_new_variable_statement(p):
         if variable not in table_symbols:
             table_symbols[variable] = variable_value #Asigna el valor a la variable en el diccionario table_symbols
             p[0] = [p[1],variable,variable_value]
+            
             if len(table_symbols) > 0:
                 # Hay datos en table_symbols
                 # Puedes realizar las acciones correspondientes
@@ -204,6 +205,24 @@ def p_values_statement(p):
     values_statement : VALUES LPARENTESIS VARIABLE COMA value RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Values
+
+    variable = p[3]
+    variable_value = p[5]
+    reservada = p[1]
+
+    if variable in table_symbols:
+        if type(table_symbols[variable]) == bool and type(variable_value) == bool:
+            table_symbols[variable] = variable_value
+            p[0] = [reservada,variable,variable_value]
+            print(f"Se cambio el valor {variable_value} en {variable}")
+        elif type(table_symbols[variable]) == int and type(variable_value) == int:
+            table_symbols[variable] = variable_value
+            p[0] = [reservada,variable,variable_value]
+            print(f"Se cambio el valor {variable_value} en {variable}")
+        else:
+            print(f"Los valores no corresponden al tipo de dato {variable_value}")
+    else:
+        print(f" La variable {variable} no existe debe de inicializar la variable")
 
 def p_alter_statement(p):
     '''
@@ -412,10 +431,9 @@ Proc @Master
     New @variable3,(Num, 5);
 
     New @variable4,(Bool, True);
-
     
+    Values (@variable3, 90);
 
-    Values (@variable1, True);
     Values (@variable2, True);
     While IsTrue(@variable2)
         ( Signal(@variable2, 1);
