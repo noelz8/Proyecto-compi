@@ -400,17 +400,16 @@ def p_until_statement(p):
     reservada = p[1]
     statement = p[3]
     condicion_state = p[5]
+    while condicion_state is not True:
+        statement = p[3]  # Aquí puedes obtener nuevamente el valor de statement si es necesario
 
-    while not condicion_state:
         for instruccion in statement:
-            print(f"Instrucción {instruccion}")
-            if instruccion == 'statement':
-                print(condicion_state)
-        
-        condicion_state == p[5]
-        if condicion_state:
-            break
-            print("Se cumplio la condición")
+            print("Ejecutando la operacion")
+
+        # Actualizar el valor de condicion_state si es necesario
+        condicion_state = p[5]
+
+    print(f"Se cumplió la condición {condicion_state}")
 
 def p_condition(p):
     '''
@@ -667,7 +666,7 @@ Proc @Master
     );
 
     Until(
-        Values(@variable3,Alter(@variable3, SUB, 50);)
+    Values(@variable3,Alter(@variable3, SUB, 50););
     )@variable3 < 50;
 
         
