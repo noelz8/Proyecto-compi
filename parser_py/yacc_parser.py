@@ -238,26 +238,14 @@ def p_alter_statement(p):
                     | ALTER LPARENTESIS VARIABLE COMA operador COMA expression RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Alter
-
-    # reservada = p[1]
-    # variable = p[3]
-    # operacion = p[5]
-    # cambio_valor = [7][0]
-
-    # if variable in table_symbols:
-    #     if type(table_symbols[variable]) == int:
-    #         p[0] = [reservada,table_symbols[variable],operacion,cambio_valor]
-    #     else:
-    #         print(f"La variable {variable} no es de tipo numerico")
-    # else:
-    #     print(f"Debe de inicializar la variable {variable} para realizar Alter")
     reservada = p[1]
     variable = p[3]
     operacion = p[5]
     cambio_valor = p[7]  # Obtener el valor correspondiente a la operación
 
+    #Comprueba que la variable este en la tabla de simbolos
     if variable in table_symbols:
-        if type(table_symbols[variable]) == int:
+        if type(table_symbols[variable]) == int and type(cambio_valor) == int: #ambos datos variable y cambio de valor debe ser int
             if operacion == 'ADD':
                 table_symbols[variable] += cambio_valor
             elif operacion == 'SUB':
@@ -492,7 +480,7 @@ Proc @Master
     
     Values (@variable3, 90);
 
-    Values (@variable3, Alter(@variable3, SUB, 3););
+    Values (@variable3, Alter(@variable3, MUL, 5););
 );'''
 
 parser.parse(data)
