@@ -457,24 +457,24 @@ def p_bool(p):
 
 def p_case_statement(p):
     '''
-    case_statement : CASE VARIABLE case_when_statements else_statement PUNTO_COMA
+    case_statement : CASE VARIABLE case_when_statement case_when_statements else_statement PUNTO_COMA
     '''
 
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Case
 def p_case_when_statements(p):
     '''
-    case_when_statements : case_when_statement case_when_statements
+    case_when_statements : case_when_statement  case_when_statements 
                          | empty
     '''
     # Aquí puedes realizar las acciones necesarias para procesar los casos When en una sentencia Case
 def p_case_when_statement(p):
     '''
-    case_when_statement : WHEN value THEN list_statement
+    case_when_statement : WHEN value  THEN LPARENTESIS list_statement RPARENTESIS
     '''
     # Aquí puedes realizar las acciones necesarias para procesar un caso When en una sentencia Case
 def p_else_statement(p):
     '''
-    else_statement : list_statement
+    else_statement : ELSE LPARENTESIS list_statement RPARENTESIS
                    | empty
     '''
     # Aquí puedes realizar las acciones necesarias para procesar la cláusula Else en una sentencia Case
@@ -627,6 +627,7 @@ def p_error(p):
         print("Error en la linea: ", p.lineno)
     else:
         print("Error de sintaxis: entrada inesperada")
+
 parser = yacc.yacc()
 
 # Prueba del parser
