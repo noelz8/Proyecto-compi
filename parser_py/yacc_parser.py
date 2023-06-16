@@ -366,11 +366,30 @@ def p_repeat_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Repeat
 
+    reservada = p[1]
+    statement = p[3]
+    break_state = p[4]
+    proceso = statement + [break_state]
+
+
+    break_encontrado = False
+    
+ 
+    for instruccion in proceso:
+        if instruccion == 'break;':
+            print("Se ha detenido el proceso")
+            break_encontrado = True
+            break 
+
+    if not break_encontrado:
+        print(f"Necesita agregar una condición de parada {break_state}")
+
 def p_break_statement(p):
     '''
     break_statement : BREAK PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Break
+    p[0] = p[1] + p[2]
 
 def p_until_statement(p):
     '''
@@ -615,13 +634,17 @@ Proc @Master
     @variable3 > 4
 
     While IsTrue(@variable4)
-    (Values (@variable3, 100);
+    (   Values (@variable3, 100);
     
-    Values (@variable3, 150);
+        Values (@variable3, 150);
 
-    Values(@variable3, Alter(@variable3, MUL, 5););
-    AlterB(@variable4);
+        Values(@variable3, Alter(@variable3, MUL, 5););
+        AlterB(@variable4);
+    );
 
+    Repeat(
+        Values (@variable3, 150);
+        break;
     );
 
         
