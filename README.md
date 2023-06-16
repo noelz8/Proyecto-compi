@@ -27,6 +27,9 @@ python main.py
 
 ## Referencias
 - [x] [PLY](https://www.dabeaz.com/ply/ply.html)
+- [x] [Python](https://docs.python.org/3/)
+- [x] [pyFirmata](https://pyfirmata.readthedocs.io/en/latest/)
+- [x] [Braille](http://sid.usal.es/idocs/F8/FDO12069/signografiabasica.pdf)
 
 ## Estado
 - [x] En desarrollo
