@@ -1,4 +1,4 @@
-# ProyectoCompiladores
+# BrailleRead
 
 ## Integrantes
 - [x] 2020087823 - Kevin Lobo Juárez
