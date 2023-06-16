@@ -21,14 +21,3 @@ def stateServo(servo):
 for i in pin:
     board.digital[i].mode = SERVO
 
-# Loop
-while True:
-    for i in range(len(pin)):
-        rotateServo(i, 40)
-    sleep(1)
-    for i in range(len(pin)):
-        rotateServo(i, 0)
-    sleep(1)
-    # board.exit()
-
-
