@@ -457,14 +457,24 @@ def p_bool(p):
 
 def p_case_statement(p):
     '''
-    case_statement : CASE VARIABLE case_when_statement case_when_statements else_statement PUNTO_COMA
+    case_statement : CASE VARIABLE  case_when_statements else_statement PUNTO_COMA
     '''
-
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Case
+    case_variable = p[2]
+    if case_variable.type != int:
+        print(f"La variable {case_variable} no es de tipo numérico")
+        return
+    
+    case_when_statements = p[3]
+    else_statement = p[4]
+    global temp_case_variable
+    temp_case_variable = case_variable
+    p[0]=(case_variable, case_when_statements, else_statement)
+
 def p_case_when_statements(p):
     '''
     case_when_statements : case_when_statement  case_when_statements 
-                         | empty
+                         | case_when_statement empty
     '''
     # Aquí puedes realizar las acciones necesarias para procesar los casos When en una sentencia Case
 def p_case_when_statement(p):
@@ -472,14 +482,27 @@ def p_case_when_statement(p):
     case_when_statement : WHEN value  THEN LPARENTESIS list_statement RPARENTESIS
     '''
     # Aquí puedes realizar las acciones necesarias para procesar un caso When en una sentencia Case
+    value = p[2]
+    list_statement = p[5]
+
+    global temp_case_variable
+    if temp_case_variable == value:
+        print(f"La variable coincide con el valor")
+        p[0]=(value, list_statement)
+    else:
+        print(f"La variable no coincide con el valor")
+    
 def p_else_statement(p):
     '''
     else_statement : ELSE LPARENTESIS list_statement RPARENTESIS
                    | empty
     '''
     # Aquí puedes realizar las acciones necesarias para procesar la cláusula Else en una sentencia Case
-
-    p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
+    if len(p) == 2:
+        pass
+    else:
+        list_statement = p[3]
+        p[0] = list_statement
 
 def p_printvalues_statement(p):
     '''
