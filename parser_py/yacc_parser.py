@@ -15,7 +15,7 @@ else:
     print("No se ha almacenado datos")
 
 #Tabla de expresiones
-table_expressions = {}
+table_expressions = []
 
 # Definicion de errores
 list_errors = []
@@ -296,6 +296,51 @@ def p_condition_statement(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia condicional
 
+    if len(p) == 4:
+        # Comparación de dos expresiones
+        primera_expresion = p[1]
+        condicion_numerica = p[2]
+        segunda_expresion = p[3]
+
+        if type(primera_expresion) == int and type(segunda_expresion) == int:
+            if condicion_numerica == '>':
+                resultado = primera_expresion > segunda_expresion
+            elif condicion_numerica == '<':
+                resultado = primera_expresion < segunda_expresion
+            elif condicion_numerica == '==':
+                resultado = primera_expresion == segunda_expresion
+            elif condicion_numerica == '<>':
+                resultado = primera_expresion != segunda_expresion
+            elif condicion_numerica == '>=':
+                resultado = primera_expresion >= segunda_expresion
+            elif condicion_numerica == '<=':
+                resultado = primera_expresion <= segunda_expresion
+            else:
+                print("Condición no válida")
+            print(f"El resultado de las condiciones es la expresion: {resultado}")
+            p[0] = resultado
+
+        elif primera_expresion in table_symbols and type(segunda_expresion) == int:
+            primera_expresion_int = table_symbols[primera_expresion]
+            if condicion_numerica == '>':
+                resultado = primera_expresion_int > segunda_expresion
+            elif condicion_numerica == '<':
+                resultado = primera_expresion_int < segunda_expresion
+            elif condicion_numerica == '==':
+                resultado = primera_expresion_int == segunda_expresion
+            elif condicion_numerica == '<>':
+                resultado = primera_expresion_int != segunda_expresion
+            elif condicion_numerica == '>=':
+                resultado = primera_expresion_int >= segunda_expresion
+            elif condicion_numerica == '<=':
+                resultado = primera_expresion_int <= segunda_expresion
+            else:
+                print("Condición no válida")
+            print(f"El resultado de las condiciones es en la variable: {resultado}")
+            p[0] = resultado
+        else:
+            print(f"La variable {primera_expresion} no está definida o {segunda_expresion} no es numérico")
+
 def p_istrue_statement(p):
     '''
     istrue_statement : ISTRUE LPARENTESIS VARIABLE RPARENTESIS PUNTO_COMA
@@ -436,7 +481,9 @@ def p_viewsignal_statement(p):
                         | VIEWSIGNAL LPARENTESIS alter_statement RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia ViewSignal
-    p[0] = p[3]
+    reservada = p[1]
+
+
 
 def p_expression(p):
     '''
@@ -471,6 +518,8 @@ def p_istrue(p):
     istrue : ISTRUE LPARENTESIS VARIABLE RPARENTESIS
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una expresión booleana
+
+    p[0] = p[3]
 
 def p_value(p):
     '''
@@ -522,6 +571,10 @@ Proc @Master
     Values (@variable3, Alter(@variable3, MUL, 5););
 
     AlterB(@variable4);
+
+    3 > 4
+
+    @variable3 > 4
     
     
 );'''
