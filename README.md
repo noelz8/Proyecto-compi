@@ -18,12 +18,7 @@
 
 ## Ejecución
 ```bash
-python main.py
-```
-
-## Ejemplo
-```bash
-python main.py
+python idepy.py
 ```
 
 ## Referencias
