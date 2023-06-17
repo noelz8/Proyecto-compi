@@ -4,7 +4,7 @@ import servo_functions as servo
 
 #Tabla de Simbolos
 table_symbols = {} #Se crea un diccionario para las variables que vamos a almacenar
-global temp_case_variable  #Variable para los case statement
+temp_case_variable = None  #Variable para los case statement
 
 if len(table_symbols) > 0:
     # Hay datos en table_symbols
@@ -457,42 +457,39 @@ def p_case_statement(p):
     case_statement : CASE VARIABLE  case_when_statements else_statement PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Case
-    global temp_case_variable
     case_variable = p[2]
+    valor_case = p[3]
     if case_variable in table_symbols:
-        if type(table_symbols[case_variable]) == int:
-            print(f"La variable {case_variable} es valida")
-            case_when_statements = p[3]
-            else_statement = p[4]
-            temp_case_variable = table_symbols[case_variable]
-            p[0]=(case_variable, case_when_statements, else_statement)
+        if type(table_symbols[case_variable]) == int and type(valor_case) == int:
+            if table_symbols[case_variable] == valor_case:
+                print(f"Los valores coinciden {table_symbols[case_variable]} y {valor_case}")
+            else:
+                print(f"Los valores no coinciden {table_symbols[case_variable]} y {valor_case}")
         else:
-            print(f"La variable {case_variable} no es de tipo numérico")
-    else:
-        print(f"Declara la variable {case_variable} para ser usada en Signal")
+            print(f"Los valores no son validos {table_symbols[case_variable]} y {valor_case} deben ser tipo numerico")
+    else: 
+        print(f"La variable no se ha declarado {case_variable}")
+
     
     
 
 def p_case_when_statements(p):
     '''
-    case_when_statements : case_when_statement  case_when_statements 
+    case_when_statements : case_when_statement case_when_statements 
                          | case_when_statement empty
+                         | empty
     '''
-    # Aquí puedes realizar las acciones necesarias para procesar los casos When en una sentencia Case
+    if len(p) == 3 and p[2] is not None:
+        p[0] = [p[1]] + p[2]
+    else:
+        p[0] = [p[1]]
+
 def p_case_when_statement(p):
     '''
     case_when_statement : WHEN value  THEN LPARENTESIS list_statement RPARENTESIS
     '''
     # Aquí puedes realizar las acciones necesarias para procesar un caso When en una sentencia Case
-    value = p[2]
-    list_statement = p[5]
-    global temp_case_variable
-
-    if temp_case_variable == value:
-        print(f"La variable coincide con el valor")
-        p[0]=(value, list_statement)
-    else:
-        print(f"La variable no coincide con el valor")
+    p[0] = p[2]
             
 def p_else_statement(p):
     '''
