@@ -4,6 +4,8 @@ from tkinter import font
 from tkinter import filedialog
 import subprocess
 import sys
+from yacc_parser import parser
+import threading
 
 #Variables Globales
 archivo_actual = ""
@@ -33,12 +35,16 @@ def compilar_codigo():
     # Aquí debes realizar el proceso de compilación adecuado para el lenguaje de programación específico
     # En este ejemplo, usaremos un comando genérico para simular la compilación en Python
     try:
-        resultado = subprocess.check_output(["python", "-c", codigo], universal_newlines=True)
-        print("El código se compiló correctamente.\n" + resultado)
+        resultado = parser.parse(codigo)
+        print("El codigo se ha compilado correctamente.\n")
     except subprocess.CalledProcessError as e:
         print("Ocurrió un error al compilar el código:")
         print("e.output:", e.output)
         print("e.stderr:", e.stderr)
+
+def compilar_en_hilo():
+    t = threading.Thread(target=compilar_codigo)
+    t.start()
 
 
 # Clase personalizada para redirigir la salida estándar al widget de texto
@@ -156,7 +162,7 @@ menuBar.add_cascade(label = "Archivo",menu=menu_archivo)
 # Crear una barra menú para compilar 
 menu_run = tk.Menu(menuBar,tearoff=0)
 menu_run.add_command(label="Compilar")
-menu_run.add_command(label="Ejecutar", command=compilar_codigo)
+menu_run.add_command(label="Ejecutar", command=compilar_en_hilo)
 menuBar.add_cascade(label = "Run",menu=menu_run)
 
 # Añade el menuBar a la ventana
@@ -164,3 +170,4 @@ ventana.config(menu=menuBar)
 
 # Bucle principal
 ventana.mainloop()
+
