@@ -293,13 +293,6 @@ def sendBrailleString(string):
 for i in pin:
     board.digital[i].mode = SERVO
 
-# for i in pin:
-#     rotateServo(i, 40)
-# sleep(0.015)
-# for i in pin:
-#     rotateServo(i, 0)
-# sleep(0.015)
-
 # Loop
 while True:
     text = input("Ingrese una palabra: ")

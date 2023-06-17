@@ -14,6 +14,7 @@
 ## Requerimientos
 - [x] Python 3.9.5
 - [x] PLY 3.11
+- [x] pyFirmata 1.2.1
 
 ## Ejecución
 ```bash

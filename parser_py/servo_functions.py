@@ -18,3 +18,10 @@ def stateServo(servo):
 for i in pin:
     board.digital[i].mode = SERVO
 
+# Test servos
+for i in range(6):
+    rotateServo(5-i, 1)
+    sleep(0.1)
+    rotateServo(5-i, 0)
+    sleep(0.1)
+

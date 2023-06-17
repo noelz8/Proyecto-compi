@@ -535,7 +535,14 @@ def p_content_print(p):
     '''
     # Aquí puedes realizar las acciones necesarias para procesar el contenido de una sentencia PrintValues
 
-    p[0] = p[1] # Asigna el valor del token a la varible p[0] en esa posición
+    if p[1].startswith('@'): #Detectar @ para verificar que sea una variable
+        variable = p[1]
+        if variable in table_symbols:
+            p[0] = table_symbols[variable]
+        else:
+            print(f"La variable {variable} no está definida")
+    else:
+        p[0] = p[1]
 def p_signal_statement(p):
     '''
     signal_statement : SIGNAL LPARENTESIS VARIABLE COMA return_num_statement RPARENTESIS PUNTO_COMA

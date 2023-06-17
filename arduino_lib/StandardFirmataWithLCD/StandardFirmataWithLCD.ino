@@ -917,17 +917,6 @@ void setup()
   lcd.print("Maquina braille");
   lcd.setCursor(0,1);
   lcd.print("Iniciando...");
-
-  // Test de los servos
-  for (int i = 0; i < 6; i++) {
-    servos[i].write(0);
-    delay(100);
-    servos[i].write(180);
-    delay(100);
-    servos[i].write(0);
-    delay(100);
-    servos[i].detach();
-  }
   
   Firmata.setFirmwareVersion(FIRMATA_FIRMWARE_MAJOR_VERSION, FIRMATA_FIRMWARE_MINOR_VERSION);
 
