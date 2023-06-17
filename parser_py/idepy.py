@@ -161,7 +161,7 @@ menuBar.add_cascade(label = "Archivo",menu=menu_archivo)
 
 # Crear una barra menú para compilar 
 menu_run = tk.Menu(menuBar,tearoff=0)
-menu_run.add_command(label="Compilar")
+menu_run.add_command(label="Compilar", command=compilar_en_hilo)
 menu_run.add_command(label="Ejecutar", command=compilar_en_hilo)
 menuBar.add_cascade(label = "Run",menu=menu_run)
 
