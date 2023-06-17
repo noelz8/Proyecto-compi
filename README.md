@@ -12,9 +12,9 @@
 
 
 ## Requerimientos
-- [x] Python 3.9.5
+- [x] Python 3.10.11
 - [x] PLY 3.11
-- [x] pyFirmata 1.2.1
+- [x] pyFirmata 1.1.0
 
 ## Ejecución
 ```bash
