@@ -546,8 +546,8 @@ def p_content_print(p):
 def p_signal_statement(p):
     '''
     signal_statement : SIGNAL LPARENTESIS VARIABLE COMA NUMERO RPARENTESIS PUNTO_COMA
-    | SIGNAL LPARENTESIS NUMERO COMA NUMERO RPARENTESIS PUNTO_COMA
-    | SIGNAL LPARENTESIS alter_statement COMA NUMERO RPARENTESIS PUNTO_COMA
+                    |  SIGNAL LPARENTESIS NUMERO COMA NUMERO RPARENTESIS PUNTO_COMA
+                    |  SIGNAL LPARENTESIS alter_statement COMA NUMERO RPARENTESIS PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Signal
 
