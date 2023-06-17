@@ -4,6 +4,7 @@ import servo_functions as servo
 
 #Tabla de Simbolos
 table_symbols = {} #Se crea un diccionario para las variables que vamos a almacenar
+global temp_case_variable  #Variable para los case statement
 
 if len(table_symbols) > 0:
     # Hay datos en table_symbols
@@ -92,7 +93,7 @@ def p_group_proc(p):
 def p_list_statement(p):
     '''
     list_statement : statement list_statement
-                    | comentario
+                    | comentario list_statement
                     | empty
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una lista de sentencias
@@ -443,9 +444,6 @@ def p_while_statement(p):
         print(f"La condición es {condicion}")
         return # Salir de la funcion
         
-
-
-
 def p_bool(p):
     '''
     bool : TRUE
@@ -459,16 +457,21 @@ def p_case_statement(p):
     case_statement : CASE VARIABLE  case_when_statements else_statement PUNTO_COMA
     '''
     # Aquí puedes realizar las acciones necesarias para procesar una sentencia Case
-    case_variable = p[2]
-    if case_variable.type != int:
-        print(f"La variable {case_variable} no es de tipo numérico")
-        return
-    
-    case_when_statements = p[3]
-    else_statement = p[4]
     global temp_case_variable
-    temp_case_variable = case_variable
-    p[0]=(case_variable, case_when_statements, else_statement)
+    case_variable = p[2]
+    if case_variable in table_symbols:
+        if type(table_symbols[case_variable]) == int:
+            print(f"La variable {case_variable} es valida")
+            case_when_statements = p[3]
+            else_statement = p[4]
+            temp_case_variable = table_symbols[case_variable]
+            p[0]=(case_variable, case_when_statements, else_statement)
+        else:
+            print(f"La variable {case_variable} no es de tipo numérico")
+    else:
+        print(f"Declara la variable {case_variable} para ser usada en Signal")
+    
+    
 
 def p_case_when_statements(p):
     '''
@@ -483,14 +486,14 @@ def p_case_when_statement(p):
     # Aquí puedes realizar las acciones necesarias para procesar un caso When en una sentencia Case
     value = p[2]
     list_statement = p[5]
-
     global temp_case_variable
+
     if temp_case_variable == value:
         print(f"La variable coincide con el valor")
         p[0]=(value, list_statement)
     else:
         print(f"La variable no coincide con el valor")
-    
+            
 def p_else_statement(p):
     '''
     else_statement : ELSE LPARENTESIS list_statement RPARENTESIS
@@ -549,6 +552,7 @@ def p_signal_statement(p):
         if type(table_symbols[variable]) == int:
             if (table_symbols[variable] >= 0 and table_symbols[variable] <= 5) and (valor == 1 or valor == 0):
                 servo.rotateServo(table_symbols[variable],valor)
+                return
             else:
                 print(f"Es posible que el estado {valor} [0 - 1] o la posicion {table_symbols[variable]} este incorrectos. Recuerda que la posicion debe ser entre 0 y 5")
             print(f"Cambio de la posición {table_symbols[variable]} con el estado {valor}")
@@ -572,14 +576,13 @@ def p_viewsignal_statement(p):
         if type(table_symbols[variable]) == int:
             if (table_symbols[variable] >= 0 and table_symbols[variable] <= 5):
                 servo.stateServo(table_symbols[variable])
+                return
             else:
                 print(f"Es posible que la posicion {table_symbols[variable]} este incorrecta. Recuerda que la posicion debe ser entre 0 y 5")
         else:
             print(f"La variable {variable} no es de tipo numérico")
     else:
         print(f"Declara la variable {variable} para ser usada en ViewSignal")
-
-
 
 def p_expression(p):
     '''
@@ -704,7 +707,15 @@ Proc @Master
 
     PrintValues("Esto es un comentario " , @variable3);
 
-        
+    New @variable5,(Num, 5);
+
+    Case @variable5
+        When 1 Then
+            (PrintValues("1");)
+        When 2 Then
+            (PrintValues("2");)
+        When 5 Then
+            (PrintValues("3"););
     
     
 );'''
