@@ -304,25 +304,54 @@ data = '''
 Proc @Master
 (
     // Comentario de prueba
-    New @variable1,(Bool, True);
     New @variable3,(Num, 5);
-    Values (@variable1, False);
 
-    Values (@variable2, True);
-    While IsTrue(@variable2)
-        ( Signal(@variable2, 1);
-        AlterB (@variable2);
+    New @variable4,(Bool, True);
+    
+    Values (@variable3, 90);
+
+    Values (@variable3, Alter(@variable3, MUL, 5););
+
+    
+
+    3 > 4
+
+    @variable3 > 4
+
+    While IsTrue(@variable4)
+    (   Values (@variable3, 100);
+    
+        Values (@variable3, 150);
+
+        Values(@variable3, Alter(@variable3, MUL, 5););
+        AlterB(@variable4);
+    );
+
+    Repeat(
+        Values (@variable3, 1);
+        Signal(@variable3,1);
+        break;
+    );
+
+    Until(
+    Values(@variable3,Alter(@variable3, SUB, 50););
+    )@variable3 < 50;
+
+    PrintValues("Esto es un comentario " , @variable3);
+
+    New @variable5,(Num, 5);
+
+    Case @variable5
+        When 1 Then
+            ( Signal(1, 1);)
+        When 2 Then
+            ( Signal(2, 1);)
+        When 5 Then
+            ( Signal(3, 1););
+    
+    
 );
-);
-Proc @Procesofoo (
-    // Comentario de prueba 
-    Values (@variable1, 100);
-    While @variable1 > 10
-        (PrintValues("valor de prueba");
-        Signal(@variale1, 1);
-        Values (@variable1, Alter (@variable1,SUB, 10););
- );
-);'''
+'''
 
 lexer.input(data)
 while True:
