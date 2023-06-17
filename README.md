@@ -28,4 +28,4 @@ python idepy.py
 - [x] [Braille](http://sid.usal.es/idocs/F8/FDO12069/signografiabasica.pdf)
 
 ## Estado
-- [x] En desarrollo
+- [x] 100% Funcional
